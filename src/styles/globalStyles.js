@@ -64,6 +64,22 @@ export const TitleFooter = styled.Text`
   marginLeft: 2%;
 `;
 
+export const Header = styled.View`
+  backgroundColor: #28262e;
+  height: ${height * 0.09}px;
+  width: 100%;
+  flexDirection: row;
+  alignItems: center;
+  justifyContent: space-between;
+  padding: 0 3%;
+`;
+
+export const TitleMain = styled.Text`
+  fontSize: ${scaleFontSize(22)}px;
+  color: #fff;
+  marginBottom: 4%;
+`;
+
 export const styles = StyleSheet.create({
   iconForm: {
     position: 'absolute',

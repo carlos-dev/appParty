@@ -57,7 +57,7 @@ export default function Login({navigation}) {
         </TouchableOpacity>
       </>
 
-      <Footer activeOpacity={0.7} >
+      <Footer onPress={() => navigation.navigate('Register')}  activeOpacity={0.7}>
         <IconLogin name='login' color='#404040' size={scaleFontSize(14)} />
         <TitleFooter>Criar uma conta</TitleFooter>
       </Footer>
