@@ -1,21 +1,19 @@
-import React from 'react'
-import { Dimensions, FlatList, StyleSheet, View, Text } from 'react-native'
-import styled from 'styled-components/native'
-
-import MenuHamburger from '../components/MenuHamburger';
+import React from 'react';
+import {
+  Dimensions, FlatList,
+} from 'react-native';
+import styled from 'styled-components/native';
 
 import { scaleFontSize } from '../utils/scaleFontSize';
 
-import logo from '../assets/images/login_03.png'
-import party from '../assets/images/party.jpg'
+import party from '../assets/images/party.jpg';
 
-import { 
-  Container, 
-  Header,
-  TitleMain
-} from '../styles/globalStyles'
+import {
+  Container,
+  TitleMain,
+} from '../styles/globalStyles';
 
-const { width } = Dimensions.get('window')
+const { width } = Dimensions.get('window');
 
 const DATA = [
   {
@@ -32,88 +30,100 @@ const DATA = [
   },
 ];
 
-function Item() {
+function Item({ item, navigation }) {
   return (
     <Cards>
-      <Card>
+      <Card activeOpacity={0.9} onPress={() => navigation.navigate('PartyDetail')}>
         <Background source={party}>
           <Info>
             <Name>Color Fest</Name>
 
+            <Details>
+              <ItemDetails>
+                <TextDetails>Confirmados</TextDetails>
+                <Number>10</Number>
+              </ItemDetails>
 
+              <ItemDetails>
+                <TextDetails>Estilo da festa</TextDetails>
+                <TextDetails>Paint Fest</TextDetails>
+              </ItemDetails>
+
+              <ItemDetails>
+                <TextDetails>Rolando...</TextDetails>
+              </ItemDetails>
+            </Details>
           </Info>
         </Background>
       </Card>
     </Cards>
-  )
+  );
 }
 
-// const Item = ({ title }) => (
-//   <View style={styles.item}>
-//     <Text style={styles.title}>{title}</Text>
-//   </View>
-// );
-
-export default function Main({navigation}) {
+export default function Main({ navigation }) {
   const renderItem = ({ item }) => (
-    <Item title={item.title} />
+    <Item title={item.title} navigation={navigation} />
   );
 
-  return(
+  return (
     <Container>
-      <Header>
-        <Logo source={logo} resizeMode='contain' />
-        <MenuHamburger />
-      </Header>
+      <ScrollView>
+        <WrapperParties>
+          <TitleMain>Festas badaladas</TitleMain>
 
-      <Wrapper>
-        <TitleMain>Festas badaladas</TitleMain>
+          <FlatList
+            data={DATA}
+            renderItem={renderItem}
+            keyExtractor={(item) => item.id}
+            horizontal
+            nestedScrollEnabled
+          />
+        </WrapperParties>
 
-        <FlatList
-          data={DATA}
-          renderItem={renderItem}
-          keyExtractor={item => item.id}
-          style={{width: '100%'}}
-          horizontal
-        />
-      </Wrapper>
-     
-      <Wrapper>
-        <TitleMain>Acontecendo agora</TitleMain>
+        <WrapperParties>
+          <TitleMain>Acontecendo agora</TitleMain>
 
-        <FlatList
-          data={DATA}
-          renderItem={renderItem}
-          keyExtractor={item => item.id}
-          style={{width: '100%'}}
-          horizontal
-        />
-      </Wrapper>
-      
-      <Wrapper>
-        <TitleMain>Nas próximas horas</TitleMain>
+          <FlatList
+            data={DATA}
+            renderItem={renderItem}
+            keyExtractor={(item) => item.id}
+            horizontal
+            nestedScrollEnabled
+          />
+        </WrapperParties>
 
-        <FlatList
-          data={DATA}
-          renderItem={renderItem}
-          keyExtractor={item => item.id}
-          style={{width: '100%'}}
-          horizontal
-        />
-      </Wrapper>
+        <WrapperParties>
+          <TitleMain>Nas próximas horas</TitleMain>
+
+          <FlatList
+            data={DATA}
+            renderItem={renderItem}
+            keyExtractor={(item) => item.id}
+            horizontal
+          />
+        </WrapperParties>
+
+        <WrapperParties>
+          <TitleMain>Festas temáticas</TitleMain>
+
+          <FlatList
+            data={DATA}
+            renderItem={renderItem}
+            keyExtractor={(item) => item.id}
+            horizontal
+          />
+        </WrapperParties>
+      </ScrollView>
     </Container>
-  )
+  );
 }
 
-export const Logo = styled.Image`
-  width: ${width * 0.3}px;
-  height: ${width * 0.1}px;
-`;
-
-export const Wrapper = styled.View`
+export const WrapperParties = styled.View`
   alignItems: flex-start;
   width: 96%;
-  paddingTop: 15%;
+  paddingTop: 10%;
+  marginBottom: 1%;
+  flex: 1;
 `;
 
 export const Cards = styled.View`
@@ -124,7 +134,7 @@ export const Cards = styled.View`
 export const Card = styled.TouchableOpacity`
   width:  ${width * 0.85}px;
   height: ${width * 0.7}px;
-  marginRight: 15;
+  marginRight: 15px;
 `;
 
 export const Background = styled.ImageBackground`
@@ -138,6 +148,30 @@ export const Info = styled.View`
   height: 35%;
   width: 100%;
   padding: 4% 6% 0 6%;
+`;
+
+export const Details = styled.View`
+  justifyContent: space-between;
+  flexDirection: row;
+`;
+
+export const ItemDetails = styled.View`
+  marginTop: 1%;
+  alignItems: center;
+`;
+
+export const TextDetails = styled.Text`
+  fontSize: ${scaleFontSize(11)}px;
+  color: #827f7e;
+`;
+
+export const Number = styled.Text`
+  fontSize: ${scaleFontSize(15)}px;
+  color: #fff;
+`;
+
+export const ScrollView = styled.ScrollView`
+  
 `;
 
 export const Name = styled.Text`

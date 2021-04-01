@@ -1,8 +1,9 @@
-import { Dimensions, StyleSheet } from 'react-native'
+/* eslint-disable prettier/prettier */
+import { Dimensions, StyleSheet } from 'react-native';
 import styled from 'styled-components/native';
 import { scaleFontSize } from '../utils/scaleFontSize';
 
-const { height } = Dimensions.get('window')
+const { height, width } = Dimensions.get('window');
 
 export const Container = styled.View`
   flex: 1;
@@ -38,11 +39,11 @@ export const Button = styled.TouchableOpacity`
   borderRadius: 8px;
   height: ${height * 0.07}px;
   justifyContent: center;
-  marginTop: 1%;
+  margin: 5% 0 25% 0;
 `;
 
 export const TextButton = styled.Text`
-  color: #fff;
+  color: #fff; 
   fontSize: ${scaleFontSize(12)}px;
   textAlign: center;
 `;
@@ -51,7 +52,7 @@ export const Footer = styled.TouchableOpacity`
   width: 100%;
   position: absolute;
   bottom: 0;
-  backgroundColor: #fcfdff;
+  backgroundColor: #333;
   padding: 4.5% 0;
   alignItems: center;
   justifyContent: center;
@@ -60,18 +61,8 @@ export const Footer = styled.TouchableOpacity`
 
 export const TitleFooter = styled.Text`
   fontSize: ${scaleFontSize(12)}px;
-  color: #404040;
+  color: #fff;
   marginLeft: 2%;
-`;
-
-export const Header = styled.View`
-  backgroundColor: #28262e;
-  height: ${height * 0.09}px;
-  width: 100%;
-  flexDirection: row;
-  alignItems: center;
-  justifyContent: space-between;
-  padding: 0 3%;
 `;
 
 export const TitleMain = styled.Text`
@@ -86,5 +77,5 @@ export const styles = StyleSheet.create({
     zIndex: 1,
     fontSize: scaleFontSize(18),
     paddingLeft: '4.5%',
-  }
-})
+  },
+});
