@@ -1,28 +1,28 @@
 import React from 'react';
 import { Dimensions } from 'react-native';
-// import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components/native';
 
-// import * as ToggleMenuActions from '../store/actions/toggleMenu';
+import * as ToggleMenuActions from '../store/actions/toggleMenu';
 
 const { width } = Dimensions.get('window');
 
 export default function MenuHamburger({ navigation }) {
-  // const menuVislble = useSelector((state) => state.toggleMenu.toggleMenu)
+  const menuVislble = useSelector((state) => state.toggleMenu.toggleMenu);
 
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
-  // function toggleMenu() {
-  //   dispatch(ToggleMenuActions.toggleMenu(!menuVislble))
-  // }
+  function toggleMenu() {
+    dispatch(ToggleMenuActions.toggleMenu(!menuVislble));
+  }
 
   return (
-    <MenuContainer>
+    <MenuContainer onPress={toggleMenu}>
       <MenuLine />
       <MenuLine />
       <MenuLine />
     </MenuContainer>
-  )
+  );
 }
 
 export const MenuContainer = styled.TouchableOpacity`

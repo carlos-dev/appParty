@@ -44,8 +44,7 @@ export default function PartyDetail({ navigation }) {
                 <Column>
                   <InfoText>Amigos</InfoText>
                   <InfoDescription>
-                    {' '}
-                    Voce nãõ tem amigos nessa festa
+                    Voce não tem amigos nessa festa
                     {' '}
                   </InfoDescription>
                 </Column>
