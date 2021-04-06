@@ -7,7 +7,7 @@ import MenuContent from './MenuContent';
 
 import logo from '../assets/images/logo.png';
 
-const { width, height } = Dimensions.get('window');
+const { width } = Dimensions.get('window');
 
 export default function Header() {
   return (

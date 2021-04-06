@@ -1,49 +1,50 @@
-import React from 'react'
-import { Dimensions, TouchableOpacity } from 'react-native'
-import styled from 'styled-components/native'
+/* eslint-disable import/no-duplicates */
+import React from 'react';
+import { Dimensions, TouchableOpacity } from 'react-native';
+import styled from 'styled-components/native';
 import IconEmail from 'react-native-vector-icons/MaterialCommunityIcons';
 import IconLogin from 'react-native-vector-icons/MaterialCommunityIcons';
 import IconLock from 'react-native-vector-icons/Feather';
 
 import { scaleFontSize } from '../utils/scaleFontSize';
 
-import { 
-  Container, 
-  ViewInput, 
-  Input, 
-  Button, 
-  TextButton, 
-  TitleFrom, 
+import {
+  Container,
+  ViewInput,
+  Input,
+  Button,
+  TextButton,
+  TitleFrom,
   Footer,
-  TitleFooter, 
-  styles 
-} from '../styles/globalStyles'
+  TitleFooter,
+  styles,
+} from '../styles/globalStyles';
 
-import logo from '../assets/images/login_03.png'
+import logo from '../assets/images/login_03.png';
 
-const { width } = Dimensions.get('window')
+const { width } = Dimensions.get('window');
 
-export default function Login({navigation}) {
+export default function Login({ navigation }) {
   return (
-    <Container style={{justifyContent: 'center'}}>
+    <Container style={{ justifyContent: 'center' }}>
       <>
-        <Logo source={logo} resizeMode='contain' />
+        <Logo source={logo} resizeMode="contain" />
 
         <TitleFrom>Faça seu login</TitleFrom>
 
         <ViewInput>
-          <IconEmail name='email-outline' color='#666360' style={styles.iconForm} />
-          <Input 
-            placeholder='E-mail'
-            placeholderTextColor='#535466'
+          <IconEmail name="email-outline" color="#666360" style={styles.iconForm} />
+          <Input
+            placeholder="E-mail"
+            placeholderTextColor="#535466"
           />
         </ViewInput>
-        
+
         <ViewInput>
-          <IconLock name='lock' color='#666360' style={styles.iconForm} />
-          <Input 
-            placeholder='Senha'
-            placeholderTextColor='#535466'
+          <IconLock name="lock" color="#666360" style={styles.iconForm} />
+          <Input
+            placeholder="Senha"
+            placeholderTextColor="#535466"
             secureTextEntry
           />
         </ViewInput>
@@ -57,12 +58,12 @@ export default function Login({navigation}) {
         </TouchableOpacity>
       </>
 
-      <Footer onPress={() => navigation.navigate('Register')}  activeOpacity={0.7}>
-        <IconLogin name='login' color='#404040' size={scaleFontSize(14)} />
+      <Footer onPress={() => navigation.navigate('Register')} activeOpacity={0.7}>
+        <IconLogin name="login" color="#404040" size={scaleFontSize(14)} />
         <TitleFooter>Criar uma conta</TitleFooter>
       </Footer>
     </Container>
-  )
+  );
 }
 
 export const Logo = styled.Image`
@@ -76,4 +77,3 @@ export const TextPass = styled.Text`
   fontSize: ${scaleFontSize(12)}px;
   color: #fff;
 `;
-

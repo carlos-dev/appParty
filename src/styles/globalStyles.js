@@ -1,9 +1,8 @@
-/* eslint-disable prettier/prettier */
 import { Dimensions, StyleSheet } from 'react-native';
 import styled from 'styled-components/native';
 import { scaleFontSize } from '../utils/scaleFontSize';
 
-const { height, width } = Dimensions.get('window');
+const { height } = Dimensions.get('window');
 
 export const Container = styled.View`
   flex: 1;
@@ -31,6 +30,7 @@ export const Input = styled.TextInput`
   paddingLeft: 15%;
   height: ${height * 0.07}px;
   fontSize: ${scaleFontSize(13)}px;
+  color: #fff;
 `;
 
 export const Button = styled.TouchableOpacity`
