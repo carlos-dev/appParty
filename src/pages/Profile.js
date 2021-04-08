@@ -1,7 +1,9 @@
 /* eslint-disable import/no-duplicates */
-import React from 'react';
+import React, { useState } from 'react';
 import { Dimensions, ScrollView } from 'react-native';
 import styled from 'styled-components/native';
+import * as ImagePicker from 'react-native-image-picker';
+
 import IconArrow from 'react-native-vector-icons/AntDesign';
 import IconPower from 'react-native-vector-icons/Feather';
 import IconCamera from 'react-native-vector-icons/Feather';
@@ -9,7 +11,7 @@ import IconUser from 'react-native-vector-icons/Feather';
 import IconEmail from 'react-native-vector-icons/MaterialCommunityIcons';
 import IconLock from 'react-native-vector-icons/Feather';
 
-import photo from '../assets/images/matheus-ferrero.jpg';
+import photoExample from '../assets/images/profile.jpg';
 
 import {
   Container, ViewInput, Input, styles,
@@ -19,6 +21,25 @@ import { scaleFontSize } from '../utils/scaleFontSize';
 const { width, height } = Dimensions.get('window');
 
 export default function Profile() {
+  const [photo, setPhoto] = useState(null);
+  function takePicture() {
+    const options = {
+      mediaType: 'photo',
+    };
+
+    ImagePicker.launchImageLibrary(options, (response) => {
+      if (response.didCancel) {
+        console.log('User cancelled image picker');
+      } else if (response.error) {
+        console.log('ImagePicker Error: ', response.error);
+      } else {
+        const source = { uri: response.uri };
+
+        setPhoto(source);
+      }
+    });
+  }
+
   return (
     <Container>
       <ScrollView contentContainerStyle={{ alignItems: 'center' }} style={{ width: '100%' }}>
@@ -31,11 +52,12 @@ export default function Profile() {
         </Header>
 
         <WrapperPhoto>
-          <Photo source={photo} />
+          <Photo source={photo || photoExample} />
 
-          <BtnPhoto activeOpacity={0.7}>
+          <BtnPhoto activeOpacity={0.7} onPress={takePicture}>
             <IconCamera name="camera" size={scaleFontSize(20)} color="#fff" />
           </BtnPhoto>
+
         </WrapperPhoto>
 
         <Form>
