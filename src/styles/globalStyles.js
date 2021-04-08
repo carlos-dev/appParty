@@ -71,7 +71,7 @@ export const TitleMain = styled.Text`
   marginBottom: 4%;
 `;
 
-export const styles = StyleSheet.create({
+export const globalStyles = StyleSheet.create({
   iconForm: {
     position: 'absolute',
     zIndex: 1,

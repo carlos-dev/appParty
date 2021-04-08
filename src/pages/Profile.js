@@ -14,7 +14,7 @@ import IconLock from 'react-native-vector-icons/Feather';
 import photoExample from '../assets/images/profile.jpg';
 
 import {
-  Container, ViewInput, Input, styles,
+  Container, ViewInput, Input, globalStyles,
 } from '../styles/globalStyles';
 import { scaleFontSize } from '../utils/scaleFontSize';
 
@@ -63,7 +63,7 @@ export default function Profile() {
         <Form>
           <Inputs>
             <ViewInput>
-              <IconUser name="user" color="#666360" style={styles.iconForm} />
+              <IconUser name="user" color="#666360" style={globalStyles.iconForm} />
               <Input
                 placeholder="Nome"
                 placeholderTextColor="#535466"
@@ -71,7 +71,7 @@ export default function Profile() {
             </ViewInput>
 
             <ViewInput>
-              <IconEmail name="email-outline" color="#666360" style={styles.iconForm} />
+              <IconEmail name="email-outline" color="#666360" style={globalStyles.iconForm} />
               <Input
                 placeholder="E-mail"
                 placeholderTextColor="#535466"
@@ -79,7 +79,7 @@ export default function Profile() {
             </ViewInput>
 
             <ViewInput>
-              <IconLock name="lock" color="#666360" style={styles.iconForm} />
+              <IconLock name="lock" color="#666360" style={globalStyles.iconForm} />
               <Input
                 placeholder="Senha atual"
                 placeholderTextColor="#535466"
@@ -88,7 +88,7 @@ export default function Profile() {
             </ViewInput>
 
             <ViewInput>
-              <IconLock name="lock" color="#666360" style={styles.iconForm} />
+              <IconLock name="lock" color="#666360" style={globalStyles.iconForm} />
               <Input
                 placeholder="Nova senha"
                 placeholderTextColor="#535466"
@@ -97,7 +97,7 @@ export default function Profile() {
             </ViewInput>
 
             <ViewInput>
-              <IconLock name="lock" color="#666360" style={styles.iconForm} />
+              <IconLock name="lock" color="#666360" style={globalStyles.iconForm} />
               <Input
                 placeholder="Confirmar senha"
                 placeholderTextColor="#535466"

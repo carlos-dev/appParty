@@ -1,6 +1,9 @@
 import React from 'react';
-import { ScrollView, Dimensions, View } from 'react-native';
+import {
+  ScrollView, Dimensions, View, StyleSheet, Linking,
+} from 'react-native';
 import styled from 'styled-components/native';
+import MapView from 'react-native-maps';
 
 import { scaleFontSize } from '../utils/scaleFontSize';
 
@@ -15,11 +18,13 @@ import {
   TitleFooter,
 } from '../styles/globalStyles';
 
-import mapaImg from '../assets/images/map.png';
-
 const { width } = Dimensions.get('window');
 
 export default function PartyDetail({ navigation }) {
+  const url = 'https://www.google.com.br/maps/@-23.0152459,-43.4496478,15z';
+  function goToMap() {
+    Linking.openURL(url);
+  }
   return (
     <View style={{ flex: 1 }}>
       <Header />
@@ -29,8 +34,26 @@ export default function PartyDetail({ navigation }) {
             <TitleParty>Sua festa é aqui, confira!</TitleParty>
 
             <MapContainer>
-              <Map source={mapaImg} />
-              <TitleMap>Ver rotas no Google Maps</TitleMap>
+              {/* <Map source={mapaImg} /> */}
+              <MapView
+                initialRegion={{
+                  latitude: -23.0163676,
+                  longitude: -43.4631791,
+                  latitudeDelta: 0.05,
+                  longitudeDelta: 0.06,
+                }}
+                style={styles.map}
+              >
+                <MapView.Marker
+                  coordinate={{
+                    latitude: -23.0163676,
+                    longitude: -43.4631791,
+                  }}
+                />
+              </MapView>
+              <BtnLink onPress={() => goToMap(url)}>
+                <TitleMap>Ver rotas no Google Maps</TitleMap>
+              </BtnLink>
             </MapContainer>
 
             <InfoParty>
@@ -124,8 +147,11 @@ export const TitleParty = styled.Text`
   color: ${colors.primary};
 `;
 
-export const TitleMap = styled.Text`
+export const BtnLink = styled.TouchableOpacity`
   padding-top: 4%;
+`;
+
+export const TitleMap = styled.Text`
   color: ${colors.primary};
   font-size: ${scaleFontSize(15)}px;
 `;
@@ -156,9 +182,10 @@ export const MapContainer = styled.View`
   display: flex;
   align-items: center;
   background-color: #3e3b47;
-  height: 350px;
+  height: ${width * 0.9};
   width: 100%;
   border-radius: 20px;
+  overflow: hidden;
 `;
 
 export const Map = styled.Image`
@@ -185,3 +212,10 @@ export const Row = styled.View`
 export const Column = styled.View`
   width: 50%;
 `;
+
+export const styles = StyleSheet.create({
+  map: {
+    height: '85%',
+    width: '100%',
+  },
+});
