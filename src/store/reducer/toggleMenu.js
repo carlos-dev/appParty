@@ -12,4 +12,3 @@ export default function toggleMenu(state = INITIAL_STATE, action) {
       return state;
   }
 }
- 

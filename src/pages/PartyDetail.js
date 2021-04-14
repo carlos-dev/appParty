@@ -27,7 +27,7 @@ export default function PartyDetail({ navigation }) {
   }
   return (
     <View style={{ flex: 1 }}>
-      <Header />
+      <Header navigation={navigation} />
       <ScrollView>
         <Container>
           <Content>
@@ -115,7 +115,7 @@ export default function PartyDetail({ navigation }) {
                 </Column>
               </Row>
             </InfoParty>
-            <Button onPress={() => navigation.navigate('Main')}>
+            <Button onPress={() => navigation.navigate('Main')} style={{ marginBottom: '25%' }}>
               <TextButton>Eu vou</TextButton>
             </Button>
           </Content>

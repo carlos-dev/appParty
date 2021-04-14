@@ -39,28 +39,12 @@ export default function MenuContent({ navigation }) {
   return (
     <Animated.View style={[styles.containerMenu, { transform: [{ translateX: widthMenu }] }]}>
       <Wrapper>
-        <Item onPress={() => handleNavigation('SurveyResearch')}>
-          <TextItem>Pesquisa de opinião</TextItem>
+        <Item onPress={() => handleNavigation('Profile')}>
+          <TextItem>Editar dados</TextItem>
         </Item>
 
-        <Item onPress={() => handleNavigation('PrivacyPolicy')}>
-          <TextItem>Política de privacidade</TextItem>
-        </Item>
-
-        <Item>
-          <TextItem>Termo de uso</TextItem>
-        </Item>
-
-        <Item>
-          <TextItem>Fale conosco</TextItem>
-        </Item>
-
-        <Item>
-          <TextItem>Compartilhar aplicativo</TextItem>
-        </Item>
-
-        <Item onPress={() => handleNavigation('About')}>
-          <TextItem>Sobre a VICHY</TextItem>
+        <Item onPress={() => handleNavigation('Login')}>
+          <TextItem>Sair</TextItem>
         </Item>
       </Wrapper>
     </Animated.View>

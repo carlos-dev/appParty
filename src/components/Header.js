@@ -9,7 +9,7 @@ import logo from '../assets/images/logo.png';
 
 const { width } = Dimensions.get('window');
 
-export default function Header() {
+export default function Header({ navigation }) {
   return (
     <Container>
       <Wrapper>
@@ -17,7 +17,7 @@ export default function Header() {
         <MenuHamburger />
       </Wrapper>
 
-      <MenuContent />
+      <MenuContent navigation={navigation} />
     </Container>
   );
 }

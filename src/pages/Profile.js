@@ -1,6 +1,6 @@
 /* eslint-disable import/no-duplicates */
 import React, { useState } from 'react';
-import { Dimensions, ScrollView } from 'react-native';
+import { Dimensions, ScrollView, TouchableOpacity } from 'react-native';
 import styled from 'styled-components/native';
 import * as ImagePicker from 'react-native-image-picker';
 
@@ -20,7 +20,7 @@ import { scaleFontSize } from '../utils/scaleFontSize';
 
 const { width, height } = Dimensions.get('window');
 
-export default function Profile() {
+export default function Profile({ navigation }) {
   const [photo, setPhoto] = useState(null);
   function takePicture() {
     const options = {
@@ -44,7 +44,9 @@ export default function Profile() {
     <Container>
       <ScrollView contentContainerStyle={{ alignItems: 'center' }} style={{ width: '100%' }}>
         <Header>
-          <IconArrow name="arrowleft" size={scaleFontSize(20)} color="#fff" />
+          <TouchableOpacity onPress={() => navigation.goBack()}>
+            <IconArrow name="arrowleft" size={scaleFontSize(20)} color="#fff" />
+          </TouchableOpacity>
 
           <TextHeader>Meu Perfil</TextHeader>
 

@@ -17,23 +17,25 @@ import {
   TitleFrom,
   Footer,
   TitleFooter,
-  styles,
+  globalStyles,
 } from '../styles/globalStyles';
 
-import logo from '../assets/images/login_03.png';
+import logo from '../assets/images/logo.png';
+
+import colors from '../styles/colors';
 
 const { width } = Dimensions.get('window');
 
 export default function Login({ navigation }) {
   return (
-    <Container style={{ justifyContent: 'center' }}>
+    <Container style={{ justifyContent: 'center', backgroundColor: colors.background }}>
       <>
         <Logo source={logo} resizeMode="contain" />
 
         <TitleFrom>Faça seu login</TitleFrom>
 
         <ViewInput>
-          <IconEmail name="email-outline" color="#666360" style={styles.iconForm} />
+          <IconEmail name="email-outline" color="#666360" style={globalStyles.iconForm} />
           <Input
             placeholder="E-mail"
             placeholderTextColor="#535466"
@@ -41,7 +43,7 @@ export default function Login({ navigation }) {
         </ViewInput>
 
         <ViewInput>
-          <IconLock name="lock" color="#666360" style={styles.iconForm} />
+          <IconLock name="lock" color="#666360" style={globalStyles.iconForm} />
           <Input
             placeholder="Senha"
             placeholderTextColor="#535466"
@@ -49,7 +51,7 @@ export default function Login({ navigation }) {
           />
         </ViewInput>
 
-        <Button activeOpacity={0.7}>
+        <Button onPress={() => navigation.navigate('Main')} activeOpacity={0.7}>
           <TextButton>Entrar</TextButton>
         </Button>
 
@@ -59,7 +61,7 @@ export default function Login({ navigation }) {
       </>
 
       <Footer onPress={() => navigation.navigate('Register')} activeOpacity={0.7}>
-        <IconLogin name="login" color="#404040" size={scaleFontSize(14)} />
+        <IconLogin name="login" color="#fff" size={scaleFontSize(14)} />
         <TitleFooter>Criar uma conta</TitleFooter>
       </Footer>
     </Container>
