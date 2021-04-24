@@ -7,7 +7,7 @@ import * as ToggleMenuActions from '../store/actions/toggleMenu';
 
 const { width } = Dimensions.get('window');
 
-export default function MenuHamburger({ navigation }) {
+export default function MenuHamburger() {
   const menuVislble = useSelector((state) => state.toggleMenu.toggleMenu);
 
   const dispatch = useDispatch();

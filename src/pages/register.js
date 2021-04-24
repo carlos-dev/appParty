@@ -1,5 +1,5 @@
 import React from 'react';
-import { Dimensions, TouchableOpacity } from 'react-native';
+import { Dimensions } from 'react-native';
 import styled from 'styled-components/native';
 import IconEmail from 'react-native-vector-icons/MaterialCommunityIcons';
 import IconUser from 'react-native-vector-icons/Feather';

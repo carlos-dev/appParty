@@ -1,8 +1,11 @@
 import React from 'react';
 import {
   Dimensions, FlatList,
+
 } from 'react-native';
 import styled from 'styled-components/native';
+
+import Header from '../components/Header';
 
 import { scaleFontSize } from '../utils/scaleFontSize';
 
@@ -12,6 +15,7 @@ import {
   Container,
   TitleMain,
 } from '../styles/globalStyles';
+import SnackbarComponent from '../components/Snackbar';
 
 const { width } = Dimensions.get('window');
 
@@ -67,6 +71,8 @@ export default function Main({ navigation }) {
 
   return (
     <Container>
+      <Header navigation={navigation} />
+
       <ScrollView>
         <WrapperParties>
           <TitleMain>Festas badaladas</TitleMain>
@@ -113,7 +119,10 @@ export default function Main({ navigation }) {
             horizontal
           />
         </WrapperParties>
+
       </ScrollView>
+
+      <SnackbarComponent />
     </Container>
   );
 }

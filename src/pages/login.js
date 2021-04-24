@@ -1,12 +1,14 @@
 /* eslint-disable import/no-duplicates */
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Dimensions, TouchableOpacity } from 'react-native';
 import styled from 'styled-components/native';
 import IconEmail from 'react-native-vector-icons/MaterialCommunityIcons';
 import IconLogin from 'react-native-vector-icons/MaterialCommunityIcons';
 import IconLock from 'react-native-vector-icons/Feather';
+import NetInfo from '@react-native-community/netinfo';
 
 import { scaleFontSize } from '../utils/scaleFontSize';
+import SnackbarComponent from '../components/Snackbar';
 
 import {
   Container,
@@ -27,6 +29,17 @@ import colors from '../styles/colors';
 const { width } = Dimensions.get('window');
 
 export default function Login({ navigation }) {
+  // useEffect(() => {
+  //   const unsubscribe = NetInfo.addEventListener((state) => {
+  //     console.log('Tipo de conexão', state.type);
+  //     console.log('Está conectado?', state.isConnected);
+  //   });
+
+  //   return () => {
+  //     unsubscribe();
+  //   };
+  // }, []);
+
   return (
     <Container style={{ justifyContent: 'center', backgroundColor: colors.background }}>
       <>
@@ -64,6 +77,7 @@ export default function Login({ navigation }) {
         <IconLogin name="login" color="#fff" size={scaleFontSize(14)} />
         <TitleFooter>Criar uma conta</TitleFooter>
       </Footer>
+      <SnackbarComponent />
     </Container>
   );
 }

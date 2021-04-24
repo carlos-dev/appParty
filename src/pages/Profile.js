@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Dimensions, ScrollView, TouchableOpacity } from 'react-native';
 import styled from 'styled-components/native';
 import * as ImagePicker from 'react-native-image-picker';
+import { useSelector, useDispatch } from 'react-redux';
 
 import IconArrow from 'react-native-vector-icons/AntDesign';
 import IconPower from 'react-native-vector-icons/Feather';
@@ -10,6 +11,11 @@ import IconCamera from 'react-native-vector-icons/Feather';
 import IconUser from 'react-native-vector-icons/Feather';
 import IconEmail from 'react-native-vector-icons/MaterialCommunityIcons';
 import IconLock from 'react-native-vector-icons/Feather';
+
+import SnackbarComponent from '../components/Snackbar';
+import ModalComponent from '../components/Modal';
+
+import * as ModalVisibleActions from '../store/actions/modalVisible';
 
 import photoExample from '../assets/images/profile.jpg';
 
@@ -22,6 +28,8 @@ const { width, height } = Dimensions.get('window');
 
 export default function Profile({ navigation }) {
   const [photo, setPhoto] = useState(null);
+  const dispatch = useDispatch();
+
   function takePicture() {
     const options = {
       mediaType: 'photo',
@@ -42,6 +50,7 @@ export default function Profile({ navigation }) {
 
   return (
     <Container>
+      <ModalComponent navigation={navigation} />
       <ScrollView contentContainerStyle={{ alignItems: 'center' }} style={{ width: '100%' }}>
         <Header>
           <TouchableOpacity onPress={() => navigation.goBack()}>
@@ -50,7 +59,9 @@ export default function Profile({ navigation }) {
 
           <TextHeader>Meu Perfil</TextHeader>
 
-          <IconPower name="power" size={scaleFontSize(20)} color="#fff" />
+          <TouchableOpacity onPress={() => dispatch(ModalVisibleActions.modalVisible(true))}>
+            <IconPower name="power" size={scaleFontSize(20)} color="#fff" />
+          </TouchableOpacity>
         </Header>
 
         <WrapperPhoto>
@@ -113,6 +124,8 @@ export default function Profile({ navigation }) {
           </BtnConfirm>
         </Form>
       </ScrollView>
+
+      <SnackbarComponent />
     </Container>
   );
 }

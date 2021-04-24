@@ -8,6 +8,7 @@ import MapView from 'react-native-maps';
 import { scaleFontSize } from '../utils/scaleFontSize';
 
 import Header from '../components/Header';
+import SnackbarComponent from '../components/Snackbar';
 
 import colors from '../styles/colors';
 
@@ -22,9 +23,11 @@ const { width } = Dimensions.get('window');
 
 export default function PartyDetail({ navigation }) {
   const url = 'https://www.google.com.br/maps/@-23.0152459,-43.4496478,15z';
+
   function goToMap() {
     Linking.openURL(url);
   }
+
   return (
     <View style={{ flex: 1 }}>
       <Header navigation={navigation} />
@@ -125,6 +128,8 @@ export default function PartyDetail({ navigation }) {
       <Footer activeOpacity={0.7} onPress={() => navigation.navigate('Main')}>
         <TitleFooter>Voltar</TitleFooter>
       </Footer>
+
+      <SnackbarComponent />
     </View>
   );
 }
