@@ -24,8 +24,6 @@ import {
 
 import logo from '../assets/images/logo.png';
 
-import colors from '../styles/colors';
-
 const { width } = Dimensions.get('window');
 
 export default function Login({ navigation }) {
@@ -39,9 +37,8 @@ export default function Login({ navigation }) {
   //     unsubscribe();
   //   };
   // }, []);
-
   return (
-    <Container style={{ justifyContent: 'center', backgroundColor: colors.background }}>
+    <Container style={{ justifyContent: 'center' }}>
       <>
         <Logo source={logo} resizeMode="contain" />
 
@@ -91,5 +88,5 @@ export const Logo = styled.Image`
 export const TextPass = styled.Text`
   marginTop: 6%;
   fontSize: ${scaleFontSize(12)}px;
-  color: #fff;
+  color:  ${(props) => props.theme.primary};
 `;

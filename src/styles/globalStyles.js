@@ -6,14 +6,14 @@ const { height } = Dimensions.get('window');
 
 export const Container = styled.View`
   flex: 1;
-  backgroundColor: #000;
+  backgroundColor: ${(props) => props.theme.background};
   alignItems: center;
 `;
 
 export const TitleFrom = styled.Text`
   fontSize: ${scaleFontSize(22)}px;
   marginBottom: 10%;
-  color: #fff;
+  color:  ${(props) => props.theme.primary};
 `;
 
 export const ViewInput = styled.View`
@@ -52,7 +52,7 @@ export const Footer = styled.TouchableOpacity`
   width: 100%;
   position: absolute;
   bottom: 0;
-  backgroundColor: #333;
+  backgroundColor: ${(props) => props.theme.secondary};
   padding: 4.5% 0;
   alignItems: center;
   justifyContent: center;

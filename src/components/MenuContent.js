@@ -8,6 +8,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { scaleFontSize } from '../utils/scaleFontSize';
 
 import * as ToggleMenuActions from '../store/actions/toggleMenu';
+import * as SwitchThemeActions from '../store/actions/switchTheme';
 
 const { width, height } = Dimensions.get('window');
 
@@ -16,11 +17,6 @@ export default function MenuContent({ navigation }) {
   const dispatch = useDispatch();
 
   const menuVislble = useSelector((state) => state.toggleMenu.toggleMenu);
-
-  function handleNavigation(screen) {
-    dispatch(ToggleMenuActions.toggleMenu(false));
-    navigation.navigate(screen);
-  }
 
   useEffect(() => {
     if (menuVislble) {
@@ -36,6 +32,15 @@ export default function MenuContent({ navigation }) {
     }
   }, [menuVislble]);
 
+  function handleNavigation(screen) {
+    dispatch(ToggleMenuActions.toggleMenu(false));
+    navigation.navigate(screen);
+  }
+
+  function switchTheme() {
+    dispatch(SwitchThemeActions.toggleMenu('light'));
+  }
+
   return (
     <Animated.View style={[styles.containerMenu, { transform: [{ translateX: widthMenu }] }]}>
       <Wrapper>
@@ -45,6 +50,10 @@ export default function MenuContent({ navigation }) {
 
         <Item onPress={() => handleNavigation('Login')}>
           <TextItem>Sair</TextItem>
+        </Item>
+
+        <Item onPress={switchTheme}>
+          <TextItem>Tema escuro</TextItem>
         </Item>
       </Wrapper>
     </Animated.View>

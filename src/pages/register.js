@@ -29,7 +29,7 @@ const { width } = Dimensions.get('window');
 
 export default function Register({ navigation }) {
   return (
-    <Container style={{ justifyContent: 'center', backgroundColor: colors.background }}>
+    <Container style={{ justifyContent: 'center' }}>
       <Logo source={logo} resizeMode="contain" />
 
       <TitleFrom>Crie sua conta</TitleFrom>
