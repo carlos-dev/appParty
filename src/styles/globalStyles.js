@@ -25,7 +25,7 @@ export const ViewInput = styled.View`
 
 export const Input = styled.TextInput`
   width: 100%;
-  backgroundColor: #232129;
+  backgroundColor: ${(props) => props.theme.secondary};
   borderRadius: 8px;
   paddingLeft: 15%;
   height: ${height * 0.07}px;
@@ -61,7 +61,7 @@ export const Footer = styled.TouchableOpacity`
 
 export const TitleFooter = styled.Text`
   fontSize: ${scaleFontSize(12)}px;
-  color: #fff;
+  color: ${(props) => props.theme.primary};
   marginLeft: 2%;
 `;
 

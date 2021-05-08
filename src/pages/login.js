@@ -1,7 +1,7 @@
 /* eslint-disable import/no-duplicates */
-import React, { useEffect } from 'react';
+import React, { useContext } from 'react';
 import { Dimensions, TouchableOpacity } from 'react-native';
-import styled from 'styled-components/native';
+import styled, { ThemeContext } from 'styled-components/native';
 import IconEmail from 'react-native-vector-icons/MaterialCommunityIcons';
 import IconLogin from 'react-native-vector-icons/MaterialCommunityIcons';
 import IconLock from 'react-native-vector-icons/Feather';
@@ -37,6 +37,9 @@ export default function Login({ navigation }) {
   //     unsubscribe();
   //   };
   // }, []);
+
+  const { primary } = useContext(ThemeContext);
+
   return (
     <Container style={{ justifyContent: 'center' }}>
       <>
@@ -71,7 +74,7 @@ export default function Login({ navigation }) {
       </>
 
       <Footer onPress={() => navigation.navigate('Register')} activeOpacity={0.7}>
-        <IconLogin name="login" color="#fff" size={scaleFontSize(14)} />
+        <IconLogin name="login" color={primary} size={scaleFontSize(14)} />
         <TitleFooter>Criar uma conta</TitleFooter>
       </Footer>
       <SnackbarComponent />

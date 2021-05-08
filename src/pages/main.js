@@ -153,7 +153,7 @@ export const Background = styled.ImageBackground`
 `;
 
 export const Info = styled.View`
-  backgroundColor: #3e3b47;
+  backgroundColor: ${(props) => props.theme.secondary};;
   height: 35%;
   width: 100%;
   padding: 4% 6% 0 6%;
@@ -176,7 +176,7 @@ export const TextDetails = styled.Text`
 
 export const Number = styled.Text`
   fontSize: ${scaleFontSize(15)}px;
-  color: #fff;
+  color: ${(props) => props.theme.primary};
 `;
 
 export const ScrollView = styled.ScrollView`
@@ -185,5 +185,5 @@ export const ScrollView = styled.ScrollView`
 
 export const Name = styled.Text`
   fontSize: ${scaleFontSize(18)}px;
-  color: #fff;
+  color: ${(props) => props.theme.primary};
 `;

@@ -135,8 +135,7 @@ export default function PartyDetail({ navigation }) {
 }
 
 export const Container = styled.View`
-  background: ${colors.background};
-  color: ${colors.primary};
+  background: ${(props) => props.theme.background};
   align-items: center;
 `;
 
@@ -149,7 +148,7 @@ export const TitleParty = styled.Text`
   padding: 20px 0 10px;
   justify-content: flex-start;
   font-size: ${scaleFontSize(20)}px;
-  color: ${colors.primary};
+  color: ${(props) => props.theme.primary};
 `;
 
 export const BtnLink = styled.TouchableOpacity`
@@ -157,18 +156,18 @@ export const BtnLink = styled.TouchableOpacity`
 `;
 
 export const TitleMap = styled.Text`
-  color: ${colors.primary};
+  color: ${(props) => props.theme.background};
   font-size: ${scaleFontSize(15)}px;
 `;
 
 export const InfoText = styled.Text`
-  color: ${colors.primary};
+  color: ${(props) => props.theme.primary};
   font-size: ${scaleFontSize(18)}px;
   padding: 0 10px 10px;
 `;
 
 export const InfoDescription = styled.Text`
-  color: ${colors.primary};
+  color: ${(props) => props.theme.background};
   font-size: ${scaleFontSize(13)}px;
   padding: 0 10px;
 `;

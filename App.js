@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useColorScheme } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Provider } from 'react-redux';
 import { ThemeProvider } from 'styled-components';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import Login from './src/pages/Login';
 import Register from './src/pages/Register';
@@ -31,12 +32,26 @@ function StackNavigation() {
 }
 
 const App = () => {
+  const [theme, setTheme] = useState('dark');
+
+  useEffect(() => {
+    async function getAsyncTheme() {
+      const asyncTheme = await AsyncStorage.getItem('theme');
+      if (asyncTheme) {
+        setTheme(asyncTheme);
+      }
+
+      console.log('asyncTheme', asyncTheme);
+    }
+
+    getAsyncTheme();
+  }, []);
   const deviceTheme = useColorScheme();
-  const theme = themes[deviceTheme] || themes.dark;
+  // const theme = themes[deviceTheme] || themes.dark;
 
   return (
     <Provider store={store}>
-      <ThemeProvider theme={theme}>
+      <ThemeProvider theme={themes[theme]}>
         <StackNavigation />
       </ThemeProvider>
     </Provider>

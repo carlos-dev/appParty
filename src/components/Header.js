@@ -30,7 +30,7 @@ export const Wrapper = styled.View`
   flexDirection: row;
   justifyContent: space-between;
   width: 100%;
-  backgroundColor: #252631;
+  backgroundColor: ${(props) => props.theme.secondary};
   height: ${width * 0.2}px;
   alignItems: center;
   padding: 0 5%

@@ -1,12 +1,11 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Dimensions } from 'react-native';
-import styled from 'styled-components/native';
+import styled, { ThemeContext } from 'styled-components/native';
 import IconEmail from 'react-native-vector-icons/MaterialCommunityIcons';
 import IconUser from 'react-native-vector-icons/Feather';
 import IconLock from 'react-native-vector-icons/Feather';
 import IconCalendar from 'react-native-vector-icons/AntDesign';
 import IconArrow from 'react-native-vector-icons/AntDesign';
-
 import { scaleFontSize } from '../utils/scaleFontSize';
 
 import {
@@ -23,11 +22,11 @@ import {
 
 import logo from '../assets/images/logo.png';
 
-import colors from '../styles/colors';
-
 const { width } = Dimensions.get('window');
 
 export default function Register({ navigation }) {
+  const { primary } = useContext(ThemeContext);
+
   return (
     <Container style={{ justifyContent: 'center' }}>
       <Logo source={logo} resizeMode="contain" />
@@ -72,7 +71,7 @@ export default function Register({ navigation }) {
       </Button>
 
       <Footer onPress={() => navigation.navigate('Login')} activeOpacity={0.7}>
-        <IconArrow name="arrowleft" color="#fff" size={scaleFontSize(14)} />
+        <IconArrow name="arrowleft" color={primary} size={scaleFontSize(14)} />
         <TitleFooter>Voltar para o login</TitleFooter>
       </Footer>
     </Container>
