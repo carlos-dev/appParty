@@ -11,6 +11,7 @@ import Register from './src/pages/Register';
 import Main from './src/pages/Main';
 import PartyDetail from './src/pages/PartyDetail';
 import Profile from './src/pages/Profile';
+import RecoverPassword from './src/pages/RecoverPassword';
 
 import store from './src/store';
 import themes from './src/styles/themes';
@@ -22,6 +23,7 @@ function StackNavigation() {
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen options={{ headerShown: false }} name="Login" component={Login} />
+        <Stack.Screen options={{ headerShown: false }} name="RecoverPassword" component={RecoverPassword} />
         <Stack.Screen options={{ headerShown: false }} name="Main" component={Main} />
         <Stack.Screen options={{ headerShown: false }} name="Profile" component={Profile} />
         <Stack.Screen options={{ headerShown: false }} name="PartyDetail" component={PartyDetail} />
@@ -48,6 +50,10 @@ const App = () => {
   }, []);
   const deviceTheme = useColorScheme();
   // const theme = themes[deviceTheme] || themes.dark;
+
+  const toggleTheme = () => {
+    setTheme(theme === 'dark' ? 'light' : 'dark');
+  };
 
   return (
     <Provider store={store}>

@@ -10,8 +10,6 @@ import { scaleFontSize } from '../utils/scaleFontSize';
 import Header from '../components/Header';
 import SnackbarComponent from '../components/Snackbar';
 
-import colors from '../styles/colors';
-
 import {
   Button,
   TextButton,

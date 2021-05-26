@@ -5,15 +5,16 @@ import styled, { ThemeContext } from 'styled-components/native';
 import IconEmail from 'react-native-vector-icons/MaterialCommunityIcons';
 import IconLogin from 'react-native-vector-icons/MaterialCommunityIcons';
 import IconLock from 'react-native-vector-icons/Feather';
-import NetInfo from '@react-native-community/netinfo';
 
 import { scaleFontSize } from '../utils/scaleFontSize';
 import SnackbarComponent from '../components/Snackbar';
+import Input from '../components/Input';
+
+import useForm from '../hooks/useForm';
 
 import {
   Container,
   ViewInput,
-  Input,
   Button,
   TextButton,
   TitleFrom,
@@ -39,6 +40,8 @@ export default function Login({ navigation }) {
   // }, []);
 
   const { primary } = useContext(ThemeContext);
+  const email = useForm();
+  const password = useForm();
 
   return (
     <Container style={{ justifyContent: 'center' }}>
@@ -52,6 +55,8 @@ export default function Login({ navigation }) {
           <Input
             placeholder="E-mail"
             placeholderTextColor="#535466"
+            {...email}
+            type="username"
           />
         </ViewInput>
 
@@ -61,6 +66,8 @@ export default function Login({ navigation }) {
             placeholder="Senha"
             placeholderTextColor="#535466"
             secureTextEntry
+            type="password"
+            {...password}
           />
         </ViewInput>
 
@@ -68,7 +75,7 @@ export default function Login({ navigation }) {
           <TextButton>Entrar</TextButton>
         </Button>
 
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate('RecoverPassword')}>
           <TextPass>Esqueci minha senha</TextPass>
         </TouchableOpacity>
       </>

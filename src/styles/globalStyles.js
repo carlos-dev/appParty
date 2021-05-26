@@ -48,6 +48,11 @@ export const TextButton = styled.Text`
   textAlign: center;
 `;
 
+export const TextError = styled.Text`
+  color: #fff; 
+  fontSize: ${scaleFontSize(12)}px;
+`;
+
 export const Footer = styled.TouchableOpacity`
   width: 100%;
   position: absolute;
