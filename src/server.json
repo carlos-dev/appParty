@@ -1,0 +1,39 @@
+{
+  "parties": [
+    {
+      "id": 1,
+      "nome": "Fest",
+      "themeFest": "Paint Fest",
+      "confirmed": 85,
+      "status": "Rolando..."
+    },
+    {
+      "id": 2,
+      "nome": "Fantasy",
+      "themeFest": "Paint Fest",
+      "confirmed": 85,
+      "status": "Rolando..."
+    },
+    {
+      "id": 3,
+      "nome": "Festinha",
+      "themeFest": "Paint Fest",
+      "confirmed": 85,
+      "status": "Rolando..."
+    },
+    {
+      "id": 4,
+      "nome": "Festão",
+      "themeFest": "Paint Fest",
+      "confirmed": 85,
+      "status": "Rolando..."
+    },
+    {
+      "id": 5,
+      "nome": "Festa hype",
+      "themeFest": "Paint Fest",
+      "confirmed": 85,
+      "status": "Rolando..."
+    }
+  ]
+}

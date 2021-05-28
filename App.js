@@ -1,3 +1,5 @@
+import './src/config/ReactotronConfig';
+
 import React, { useEffect, useState } from 'react';
 import { useColorScheme } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
@@ -12,6 +14,7 @@ import Main from './src/pages/Main';
 import PartyDetail from './src/pages/PartyDetail';
 import Profile from './src/pages/Profile';
 import RecoverPassword from './src/pages/RecoverPassword';
+import SearchParty from './src/pages/SearchParty';
 
 import store from './src/store';
 import themes from './src/styles/themes';
@@ -28,6 +31,7 @@ function StackNavigation() {
         <Stack.Screen options={{ headerShown: false }} name="Profile" component={Profile} />
         <Stack.Screen options={{ headerShown: false }} name="PartyDetail" component={PartyDetail} />
         <Stack.Screen options={{ headerShown: false }} name="Register" component={Register} />
+        <Stack.Screen options={{ headerShown: false }} name="SearchParty" component={SearchParty} />
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable import/no-duplicates */
 import React, { useContext } from 'react';
 import { Dimensions, TouchableOpacity } from 'react-native';

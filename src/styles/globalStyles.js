@@ -74,6 +74,7 @@ export const TitleMain = styled.Text`
   fontSize: ${scaleFontSize(22)}px;
   color: #fff;
   marginBottom: 4%;
+  marginLeft: 1%;
 `;
 
 export const globalStyles = StyleSheet.create({
@@ -82,5 +83,9 @@ export const globalStyles = StyleSheet.create({
     zIndex: 1,
     fontSize: scaleFontSize(18),
     paddingLeft: '4.5%',
+  },
+
+  iconSearch: {
+    fontSize: scaleFontSize(22),
   },
 });

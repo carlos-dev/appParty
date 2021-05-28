@@ -1,11 +1,13 @@
-import React from 'react';
-import {
-  Dimensions, FlatList,
-
-} from 'react-native';
+import React, { useEffect } from 'react';
+import { Dimensions, FlatList } from 'react-native';
+import { useSelector, useDispatch } from 'react-redux';
 import styled from 'styled-components/native';
+import IconSearch from 'react-native-vector-icons/EvilIcons';
 
 import Header from '../components/Header';
+import SnackbarComponent from '../components/Snackbar';
+
+import * as GetPartiesActions from '../store/actions/getParties';
 
 import { scaleFontSize } from '../utils/scaleFontSize';
 
@@ -14,8 +16,8 @@ import party from '../assets/images/party.jpg';
 import {
   Container,
   TitleMain,
+  globalStyles,
 } from '../styles/globalStyles';
-import SnackbarComponent from '../components/Snackbar';
 
 const { width } = Dimensions.get('window');
 
@@ -69,9 +71,21 @@ export default function Main({ navigation }) {
     <Item title={item.title} navigation={navigation} />
   );
 
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(GetPartiesActions.partiesRequest());
+  }, []);
+
   return (
     <Container>
       <Header navigation={navigation} />
+
+      <BtnSearch activeOpacity={0.7} onPress={() => navigation.navigate('SearchParty')}>
+        <IconSearch name="search" color="#666360" style={globalStyles.iconSearch} />
+
+        <TextSearch>Buscar</TextSearch>
+      </BtnSearch>
 
       <ScrollView>
         <WrapperParties>
@@ -135,6 +149,29 @@ export const WrapperParties = styled.View`
   flex: 1;
 `;
 
+export const Search = styled.TextInput`
+  backgroundColor:  ${(props) => props.theme.secondary};
+  width: 100%;
+  marginTop: 2%;
+  paddingLeft: 15%;
+  color: #fff;
+`;
+
+export const TextSearch = styled.Text`
+  fontSize: ${scaleFontSize(13)}px;
+  color: #666360;
+  marginLeft: 2%;
+`;
+
+export const BtnSearch = styled.TouchableOpacity`
+  backgroundColor:  ${(props) => props.theme.secondary};
+  width: 96%;
+  marginTop: 5%;
+  marginBottom: 2%;
+  flexDirection: row;
+  padding: 3% 2%;
+`;
+
 export const Cards = styled.View`
   flex: 1;
   width: 100%;
@@ -153,7 +190,7 @@ export const Background = styled.ImageBackground`
 `;
 
 export const Info = styled.View`
-  backgroundColor: ${(props) => props.theme.secondary};;
+  backgroundColor: ${(props) => props.theme.secondary};
   height: 35%;
   width: 100%;
   padding: 4% 6% 0 6%;

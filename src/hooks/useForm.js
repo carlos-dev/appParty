@@ -30,10 +30,10 @@ const useForm = (type) => {
     return true;
   }
 
-  function onChange(target) {
+  function onChange() {
     // setValue(target.value);
-    console.log(value);
     // if (error) validate(target.value);
+    console.log(value);
   }
 
   return {
