@@ -15,8 +15,12 @@ import PartyDetail from './src/pages/PartyDetail';
 import Profile from './src/pages/Profile';
 import RecoverPassword from './src/pages/RecoverPassword';
 import SearchParty from './src/pages/SearchParty';
+import PartyTheme from './src/pages/PartyTheme';
 
 import store from './src/store';
+
+import { setNavigator } from './src/services/navigation';
+
 import themes from './src/styles/themes';
 
 const Stack = createStackNavigator();
@@ -26,6 +30,7 @@ function StackNavigation() {
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen options={{ headerShown: false }} name="Login" component={Login} />
+        <Stack.Screen options={{ headerShown: false }} name="PartyTheme" component={PartyTheme} />
         <Stack.Screen options={{ headerShown: false }} name="RecoverPassword" component={RecoverPassword} />
         <Stack.Screen options={{ headerShown: false }} name="Main" component={Main} />
         <Stack.Screen options={{ headerShown: false }} name="Profile" component={Profile} />

@@ -2,16 +2,18 @@
 /* eslint-disable import/no-duplicates */
 import React, { useContext } from 'react';
 import { Dimensions, TouchableOpacity } from 'react-native';
+import { useDispatch } from 'react-redux';
 import styled, { ThemeContext } from 'styled-components/native';
 import IconEmail from 'react-native-vector-icons/MaterialCommunityIcons';
 import IconLogin from 'react-native-vector-icons/MaterialCommunityIcons';
 import IconLock from 'react-native-vector-icons/Feather';
 
-import { scaleFontSize } from '../utils/scaleFontSize';
 import SnackbarComponent from '../components/Snackbar';
 import Input from '../components/Input';
 
+import { scaleFontSize } from '../utils/scaleFontSize';
 import useForm from '../hooks/useForm';
+import * as LoginActions from '../store/actions/login';
 
 import {
   Container,
@@ -29,20 +31,35 @@ import logo from '../assets/images/logo.png';
 const { width } = Dimensions.get('window');
 
 export default function Login({ navigation }) {
-  // useEffect(() => {
-  //   const unsubscribe = NetInfo.addEventListener((state) => {
-  //     console.log('Tipo de conexão', state.type);
-  //     console.log('Está conectado?', state.isConnected);
-  //   });
-
-  //   return () => {
-  //     unsubscribe();
-  //   };
-  // }, []);
-
   const { primary } = useContext(ThemeContext);
   const email = useForm();
   const password = useForm();
+  const dispatch = useDispatch();
+
+  function handleLogin() {
+    const obj = { email: email.value, password: password.value, remember: true };
+
+    dispatch(LoginActions.loginRequest(obj));
+
+    // navigation.navigate('Main');
+
+    // const emailContent = email.value;
+    // const passwordContent = password.value;
+
+    // fetch('https://app-party-users.herokuapp.com/login', {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    //   body: JSON.stringify({ email: emailContent, password: passwordContent, remember: true }),
+    // }).then((response) => {
+    //   console.log(response);
+    //   return response.json();
+    // }).then((json) => {
+    //   console.log(json);
+    //   return json;
+    // });
+  }
 
   return (
     <Container style={{ justifyContent: 'center' }}>
@@ -72,7 +89,7 @@ export default function Login({ navigation }) {
           />
         </ViewInput>
 
-        <Button onPress={() => navigation.navigate('Main')} activeOpacity={0.7}>
+        <Button onPress={handleLogin}>
           <TextButton>Entrar</TextButton>
         </Button>
 
