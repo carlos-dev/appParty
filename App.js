@@ -27,15 +27,15 @@ const Stack = createStackNavigator();
 
 function StackNavigation() {
   return (
-    <NavigationContainer>
+    <NavigationContainer ref={setNavigator}>
       <Stack.Navigator>
         <Stack.Screen options={{ headerShown: false }} name="Login" component={Login} />
+        <Stack.Screen options={{ headerShown: false }} name="Register" component={Register} />
         <Stack.Screen options={{ headerShown: false }} name="PartyTheme" component={PartyTheme} />
         <Stack.Screen options={{ headerShown: false }} name="RecoverPassword" component={RecoverPassword} />
         <Stack.Screen options={{ headerShown: false }} name="Main" component={Main} />
         <Stack.Screen options={{ headerShown: false }} name="Profile" component={Profile} />
         <Stack.Screen options={{ headerShown: false }} name="PartyDetail" component={PartyDetail} />
-        <Stack.Screen options={{ headerShown: false }} name="Register" component={Register} />
         <Stack.Screen options={{ headerShown: false }} name="SearchParty" component={SearchParty} />
       </Stack.Navigator>
     </NavigationContainer>

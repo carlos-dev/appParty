@@ -8,8 +8,7 @@ export const loginRequest = (loginData) => ({
 export const loginSuccess = (loginData) => ({
   type: 'LOGIN_SUCCESS',
   payload: {
-    email: loginData.email,
-    password: loginData.password,
+    token: loginData,
   },
 });
 

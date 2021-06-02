@@ -1,8 +1,8 @@
 /* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable import/no-duplicates */
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Dimensions, TouchableOpacity } from 'react-native';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import styled, { ThemeContext } from 'styled-components/native';
 import IconEmail from 'react-native-vector-icons/MaterialCommunityIcons';
 import IconLogin from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -36,10 +36,22 @@ export default function Login({ navigation }) {
   const password = useForm();
   const dispatch = useDispatch();
 
+  const data = useSelector((state) => state);
+
+  useEffect(() => {
+    console.log(data);
+
+    if (data.login.login) navigation.navigate('Main');
+  }, [data]);
+
   function handleLogin() {
     const obj = { email: email.value, password: password.value, remember: true };
 
     dispatch(LoginActions.loginRequest(obj));
+
+    // const login = useSelector((state) => state);
+
+    // console.log(login);
 
     // navigation.navigate('Main');
 
@@ -60,6 +72,8 @@ export default function Login({ navigation }) {
     //   return json;
     // });
   }
+
+  // if (data.login.loading) return <p>{error}</p>
 
   return (
     <Container style={{ justifyContent: 'center' }}>

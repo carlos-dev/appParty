@@ -6,12 +6,17 @@ import IconUser from 'react-native-vector-icons/Feather';
 import IconLock from 'react-native-vector-icons/Feather';
 import IconCalendar from 'react-native-vector-icons/AntDesign';
 import IconArrow from 'react-native-vector-icons/AntDesign';
+import { useDispatch } from 'react-redux';
+
+import Input from '../components/Input';
+
+import useForm from '../hooks/useForm';
 import { scaleFontSize } from '../utils/scaleFontSize';
+import * as RegisterActions from '../store/actions/register';
 
 import {
   Container,
   ViewInput,
-  Input,
   Button,
   TextButton,
   TitleFrom,
@@ -26,6 +31,29 @@ const { width } = Dimensions.get('window');
 
 export default function Register({ navigation }) {
   const { primary } = useContext(ThemeContext);
+  const user = useForm();
+  const email = useForm();
+  const birthdate = useForm();
+  const password = useForm();
+  const passwordConfirmation = useForm();
+  const dispatch = useDispatch();
+
+  function signup() {
+    const birthdateSplit = birthdate.value.split('/');
+    const formattedDate = `${birthdateSplit[2]}/${birthdateSplit[1]}/${birthdateSplit[0]}`;
+    console.log(formattedDate);
+
+    const obj = {
+      name: user.value,
+      email: email.value,
+      birthdate: formattedDate,
+      password: password.value,
+      password_confirmation: passwordConfirmation.value,
+      remember: true,
+    };
+
+    dispatch(RegisterActions.registerRequest(obj));
+  }
 
   return (
     <Container style={{ justifyContent: 'center' }}>
@@ -38,6 +66,7 @@ export default function Register({ navigation }) {
         <Input
           placeholder="Nome"
           placeholderTextColor="#535466"
+          {...user}
         />
       </ViewInput>
 
@@ -46,6 +75,7 @@ export default function Register({ navigation }) {
         <Input
           placeholder="Email"
           placeholderTextColor="#535466"
+          {...email}
         />
       </ViewInput>
 
@@ -54,6 +84,7 @@ export default function Register({ navigation }) {
         <Input
           placeholder="Data de nascimento"
           placeholderTextColor="#535466"
+          {...birthdate}
         />
       </ViewInput>
 
@@ -63,10 +94,21 @@ export default function Register({ navigation }) {
           placeholder="Senha"
           placeholderTextColor="#535466"
           secureTextEntry
+          {...password}
         />
       </ViewInput>
 
-      <Button activeOpacity={0.7}>
+      <ViewInput>
+        <IconLock name="lock" color="#666360" style={globalStyles.iconForm} />
+        <Input
+          placeholder="Confirme a senha"
+          placeholderTextColor="#535466"
+          secureTextEntry
+          {...passwordConfirmation}
+        />
+      </ViewInput>
+
+      <Button onPress={signup} activeOpacity={0.7}>
         <TextButton>Entrar</TextButton>
       </Button>
 
