@@ -10,6 +10,7 @@ import IconLock from 'react-native-vector-icons/Feather';
 
 import SnackbarComponent from '../components/Snackbar';
 import Input from '../components/Input';
+import Loading from '../components/Loading';
 
 import { scaleFontSize } from '../utils/scaleFontSize';
 import useForm from '../hooks/useForm';
@@ -36,48 +37,27 @@ export default function Login({ navigation }) {
   const password = useForm();
   const dispatch = useDispatch();
 
-  const data = useSelector((state) => state);
+  const { login } = useSelector((state) => state);
 
   useEffect(() => {
-    console.log(data);
-
-    if (data.login.login) navigation.navigate('Main');
-  }, [data]);
+    if (login.login) {
+      if (typeof login.login.loginData === 'string') {
+        navigation.navigate('Main');
+      }
+    }
+  }, [login]);
 
   function handleLogin() {
     const obj = { email: email.value, password: password.value, remember: true };
 
     dispatch(LoginActions.loginRequest(obj));
-
-    // const login = useSelector((state) => state);
-
-    // console.log(login);
-
-    // navigation.navigate('Main');
-
-    // const emailContent = email.value;
-    // const passwordContent = password.value;
-
-    // fetch('https://app-party-users.herokuapp.com/login', {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: JSON.stringify({ email: emailContent, password: passwordContent, remember: true }),
-    // }).then((response) => {
-    //   console.log(response);
-    //   return response.json();
-    // }).then((json) => {
-    //   console.log(json);
-    //   return json;
-    // });
   }
-
-  // if (data.login.loading) return <p>{error}</p>
 
   return (
     <Container style={{ justifyContent: 'center' }}>
       <>
+        {login.loading && <Loading />}
+
         <Logo source={logo} resizeMode="contain" />
 
         <TitleFrom>Faça seu login</TitleFrom>

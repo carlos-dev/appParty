@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Dimensions } from 'react-native';
 import styled, { ThemeContext } from 'styled-components/native';
 import IconEmail from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -6,8 +6,9 @@ import IconUser from 'react-native-vector-icons/Feather';
 import IconLock from 'react-native-vector-icons/Feather';
 import IconCalendar from 'react-native-vector-icons/AntDesign';
 import IconArrow from 'react-native-vector-icons/AntDesign';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
+import Loading from '../components/Loading';
 import Input from '../components/Input';
 
 import useForm from '../hooks/useForm';
@@ -38,10 +39,21 @@ export default function Register({ navigation }) {
   const passwordConfirmation = useForm();
   const dispatch = useDispatch();
 
+  const { register } = useSelector((state) => state);
+
+  useEffect(() => {
+    if (register.registerData) {
+      if (register.registerData.registerData === 200) {
+        navigation.navigate('Main');
+      }
+    }
+
+    console.log(register);
+  }, [register]);
+
   function signup() {
     const birthdateSplit = birthdate.value.split('/');
     const formattedDate = `${birthdateSplit[2]}/${birthdateSplit[1]}/${birthdateSplit[0]}`;
-    console.log(formattedDate);
 
     const obj = {
       name: user.value,
@@ -57,6 +69,8 @@ export default function Register({ navigation }) {
 
   return (
     <Container style={{ justifyContent: 'center' }}>
+      {register.loading && <Loading />}
+
       <Logo source={logo} resizeMode="contain" />
 
       <TitleFrom>Crie sua conta</TitleFrom>

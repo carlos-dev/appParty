@@ -18,11 +18,11 @@ function* register(action) {
     const data = yield call(api.post, '/signup', registerData);
     console.log(data);
 
-    yield put(RegisterActions.registerSuccess(registerData));
+    yield put(RegisterActions.registerSuccess(data.status));
   } catch (error) {
     console.log('saga_register', error.response);
 
-    yield put(RegisterActions.registerFailure(error.response));
+    yield put(RegisterActions.registerFailure(error.response.status));
   }
 }
 
@@ -37,7 +37,7 @@ function* login(action) {
     // navigate('Main');
   } catch (error) {
     console.log(error.error);
-    yield put(LoginActions.loginFailure(error));
+    yield put(LoginActions.loginFailure(error.response.status));
   }
 }
 

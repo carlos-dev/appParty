@@ -73,16 +73,6 @@ export default function MenuContent({ navigation }) {
   );
 }
 
-export const ConteinerMenu = styled.View`
-  position: absolute;
-  marginTop: ${width * 0.2}px;
-  width: 100%;
-  height: 60%;
-  backgroundColor: #1e212d; 
-  zIndex: 1;
-  overflow: hidden;
-`;
-
 export const Wrapper = styled.View`
   width: 70%;
   backgroundColor: #1e212d;
