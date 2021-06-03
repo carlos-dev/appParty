@@ -10,6 +10,7 @@ import { navigate } from '../../services/navigation';
 import * as GetPartiesActions from '../actions/getParties';
 import * as LoginActions from '../actions/login';
 import * as RegisterActions from '../actions/register';
+import * as ForgotPassActions from '../actions/forgotPass';
 
 function* register(action) {
   try {
@@ -41,6 +42,20 @@ function* login(action) {
   }
 }
 
+function* forgotPass(action) {
+  try {
+    const { forgot } = action.payload;
+
+    const { data } = yield call(api.post, '/forgot-password', forgot);
+    yield put(ForgotPassActions.forgotSuccess(data));
+
+    console.log(data);
+  } catch (error) {
+    console.log(error.error);
+    yield put(ForgotPassActions.forgotFailure(error.response.status));
+  }
+}
+
 function* getParties() {
   try {
     const data = yield call(api.get, '/parties');
@@ -58,5 +73,6 @@ export default function* rootSaga() {
     takeLatest('PARTIES_REQUEST', getParties),
     takeLatest('LOGIN_REQUEST', login),
     takeLatest('REGISTER_REQUEST', register),
+    takeLatest('FORGOT_REQUEST', forgotPass),
   ]);
 }

@@ -1,17 +1,21 @@
 /* eslint-disable import/no-duplicates */
 import React, { useContext } from 'react';
 import { Dimensions } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 import styled, { ThemeContext } from 'styled-components/native';
 import IconEmail from 'react-native-vector-icons/MaterialCommunityIcons';
 import IconArrow from 'react-native-vector-icons/AntDesign';
 
+import Input from '../components/Input';
+
 import { scaleFontSize } from '../utils/scaleFontSize';
+import useForm from '../hooks/useForm';
+
 import SnackbarComponent from '../components/Snackbar';
 
 import {
   Container,
   ViewInput,
-  Input,
   Button,
   TextButton,
   TitleFrom,
@@ -24,6 +28,11 @@ const { width } = Dimensions.get('window');
 
 export default function RecoverPassword({ navigation }) {
   const { primary } = useContext(ThemeContext);
+  const email = useForm();
+
+  function forgotPass() {
+    const obj = { email: email.value, remember: true };
+  }
 
   return (
     <Container style={{ justifyContent: 'center' }}>
@@ -35,6 +44,8 @@ export default function RecoverPassword({ navigation }) {
           <Input
             placeholder="E-mail"
             placeholderTextColor="#535466"
+            {...email}
+            type="username"
           />
         </ViewInput>
 

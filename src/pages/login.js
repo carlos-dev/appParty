@@ -87,9 +87,9 @@ export default function Login({ navigation }) {
           <TextButton>Entrar</TextButton>
         </Button>
 
-        <TouchableOpacity onPress={() => navigation.navigate('RecoverPassword')}>
+        {/* <TouchableOpacity onPress={() => navigation.navigate('RecoverPassword')}>
           <TextPass>Esqueci minha senha</TextPass>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </>
 
       <Footer onPress={() => navigation.navigate('Register')} activeOpacity={0.7}>
