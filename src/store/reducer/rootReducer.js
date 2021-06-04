@@ -5,7 +5,8 @@ import modalVisible from './modalVisible';
 import getParties from './getParties';
 import login from './login';
 import register from './register';
-import forgotPass from './forgotPass';
+import getThematic from './getThematic';
+// import forgotPass from './forgotPass';
 
 export default combineReducers({
   toggleMenu,
@@ -13,5 +14,5 @@ export default combineReducers({
   getParties,
   login,
   register,
-  forgotPass,
+  getThematic,
 });

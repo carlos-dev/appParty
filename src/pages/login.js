@@ -1,7 +1,8 @@
 /* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable import/no-duplicates */
 import React, { useContext, useEffect } from 'react';
-import { Dimensions, TouchableOpacity } from 'react-native';
+import { Dimensions } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useDispatch, useSelector } from 'react-redux';
 import styled, { ThemeContext } from 'styled-components/native';
 import IconEmail from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -40,11 +41,21 @@ export default function Login({ navigation }) {
   const { login } = useSelector((state) => state);
 
   useEffect(() => {
-    if (login.login) {
-      if (typeof login.login.loginData === 'string') {
+    async function signIn() {
+      const token = await AsyncStorage.getItem('token');
+      if (token) {
         navigation.navigate('Main');
       }
+
+      if (login.login) {
+        if (typeof login.login.loginData === 'string') {
+          await AsyncStorage.setItem('token', login.login.loginData);
+          navigation.navigate('Main');
+        }
+      }
     }
+
+    signIn();
   }, [login]);
 
   function handleLogin() {

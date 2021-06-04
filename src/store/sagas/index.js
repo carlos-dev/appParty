@@ -1,16 +1,13 @@
 import {
   all, takeLatest, call, put,
 } from 'redux-saga/effects';
-import { CommonActions } from '@react-navigation/native';
-
 import api from '../../services/api';
-
-import { navigate } from '../../services/navigation';
 
 import * as GetPartiesActions from '../actions/getParties';
 import * as LoginActions from '../actions/login';
 import * as RegisterActions from '../actions/register';
 import * as ForgotPassActions from '../actions/forgotPass';
+import * as GetThematicActions from '../actions/getThematic';
 
 function* register(action) {
   try {
@@ -56,21 +53,24 @@ function* forgotPass(action) {
   }
 }
 
-function* getParties() {
+function* getThematic(action) {
   try {
-    const data = yield call(api.get, '/parties');
+    const { id } = action.payload;
+
+    const { data } = yield call(api.get, `/dashboard/tematicas?page=${id}`);
 
     console.log('data', data);
 
-    yield put(GetPartiesActions.partiesRequest(data));
+    yield put(GetThematicActions.getThematicSuccess(data.parties));
   } catch (error) {
     console.log('getParties_error', error.response);
+    yield put(GetThematicActions.getThematicFailure(error.response));
   }
 }
 
 export default function* rootSaga() {
   yield all([
-    takeLatest('PARTIES_REQUEST', getParties),
+    takeLatest('GET_THEMATIC_REQUEST', getThematic),
     takeLatest('LOGIN_REQUEST', login),
     takeLatest('REGISTER_REQUEST', register),
     takeLatest('FORGOT_REQUEST', forgotPass),

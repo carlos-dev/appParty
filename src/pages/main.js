@@ -7,7 +7,7 @@ import IconSearch from 'react-native-vector-icons/EvilIcons';
 import Header from '../components/Header';
 import SnackbarComponent from '../components/Snackbar';
 
-import * as GetPartiesActions from '../store/actions/getParties';
+import * as GetThematicActions from '../store/actions/getThematic';
 
 import { scaleFontSize } from '../utils/scaleFontSize';
 
@@ -27,6 +27,7 @@ import {
   Number,
   Name,
 } from '../styles/globalStyles';
+import Parties from '../components/Parties';
 
 const { width } = Dimensions.get('window');
 
@@ -76,14 +77,21 @@ function Item({ item, navigation }) {
 }
 
 export default function Main({ navigation }) {
+  const dispatch = useDispatch();
+  const { getThematic } = useSelector((state) => state);
+
   const renderItem = ({ item }) => (
     <Item title={item.title} navigation={navigation} />
   );
 
-  const dispatch = useDispatch();
-
   useEffect(() => {
-    dispatch(GetPartiesActions.partiesRequest());
+    async function getParties() {
+      if (!getThematic.thematicData) {
+        await dispatch(GetThematicActions.getThematicRequest(1));
+      }
+    }
+
+    getParties();
   }, []);
 
   return (
@@ -120,7 +128,7 @@ export default function Main({ navigation }) {
             nestedScrollEnabled
           />
         </WrapperParties>
-
+        {/*
         <WrapperParties>
           <TitleMain>Nas próximas horas</TitleMain>
 
@@ -130,18 +138,9 @@ export default function Main({ navigation }) {
             keyExtractor={(item) => item.id}
             horizontal
           />
-        </WrapperParties>
+        </WrapperParties> */}
 
-        <WrapperParties>
-          <TitleMain>Festas temáticas</TitleMain>
-
-          <FlatList
-            data={DATA}
-            renderItem={renderItem}
-            keyExtractor={(item) => item.id}
-            horizontal
-          />
-        </WrapperParties>
+        <Parties navigation={navigation} title="Festas temáticas" partyData={getThematic} />
 
       </ScrollView>
 
