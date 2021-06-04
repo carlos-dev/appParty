@@ -5,16 +5,16 @@ export const getThematicRequest = (id) => ({
   },
 });
 
-export const getThematicSuccess = (thematicData) => ({
+export const getThematicSuccess = (parties) => ({
   type: 'GET_THEMATIC_SUCCESS',
   payload: {
-    thematicData,
+    parties,
   },
 });
 
-export const getThematicFailure = (thematicData) => ({
+export const getThematicFailure = (parties) => ({
   type: 'GET_THEMATIC_FAILURE',
   payload: {
-    thematicData,
+    parties,
   },
 });

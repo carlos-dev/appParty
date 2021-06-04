@@ -17,20 +17,7 @@ import {
   Name,
 } from '../styles/globalStyles';
 
-const DATA = [
-  {
-    id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-    title: 'First Item',
-  },
-  {
-    id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-    title: 'Second Item',
-  },
-  {
-    id: '58694a0f-3da1-471f-bd96-145571e29d72',
-    title: 'Third Item',
-  },
-];
+const { width } = Dimensions.get('window');
 
 function Item({ navigation, partyData }) {
   console.log(partyData.item);
@@ -74,10 +61,13 @@ export default function Parties({ navigation, title, partyData }) {
       <TitleMain>{title}</TitleMain>
 
       {partyData.loading ? (
-        <ActivityIndicator size="large" />
+        <ContainerLoading>
+          <ActivityIndicator color="#777" size="large" />
+
+        </ContainerLoading>
       ) : (
         <FlatList
-          data={partyData.thematicData.data}
+          data={partyData.parties.data}
           renderItem={renderItem}
           keyExtractor={(item) => String(item.id)}
           horizontal
@@ -93,4 +83,11 @@ export const WrapperParties = styled.View`
   paddingTop: 10%;
   marginBottom: 1%;
   flex: 1;
+`;
+
+export const ContainerLoading = styled.View`
+  width:  ${width * 0.85}px;
+  height: ${width * 0.7}px;
+  justifyContent: center;
+  alignItems: center;
 `;

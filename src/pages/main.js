@@ -8,6 +8,7 @@ import Header from '../components/Header';
 import SnackbarComponent from '../components/Snackbar';
 
 import * as GetThematicActions from '../store/actions/getThematic';
+import * as PartyNextHoursActions from '../store/actions/partyNextHours';
 
 import { scaleFontSize } from '../utils/scaleFontSize';
 
@@ -78,7 +79,7 @@ function Item({ item, navigation }) {
 
 export default function Main({ navigation }) {
   const dispatch = useDispatch();
-  const { getThematic } = useSelector((state) => state);
+  const { getThematic, partyNextHours } = useSelector((state) => state);
 
   const renderItem = ({ item }) => (
     <Item title={item.title} navigation={navigation} />
@@ -89,6 +90,8 @@ export default function Main({ navigation }) {
       if (!getThematic.thematicData) {
         await dispatch(GetThematicActions.getThematicRequest(1));
       }
+
+      await dispatch(PartyNextHoursActions.partyNextHoursRequest(1));
     }
 
     getParties();
@@ -105,17 +108,9 @@ export default function Main({ navigation }) {
       </BtnSearch>
 
       <ScrollView>
-        <WrapperParties>
-          <TitleMain>Festas badaladas</TitleMain>
+        <Parties navigation={navigation} title="Próximas horas" partyData={partyNextHours} />
 
-          <FlatList
-            data={DATA}
-            renderItem={renderItem}
-            keyExtractor={(item) => item.id}
-            horizontal
-            nestedScrollEnabled
-          />
-        </WrapperParties>
+        <Parties navigation={navigation} title="Festas temáticas" partyData={getThematic} />
 
         <WrapperParties>
           <TitleMain>Acontecendo agora</TitleMain>
@@ -128,19 +123,6 @@ export default function Main({ navigation }) {
             nestedScrollEnabled
           />
         </WrapperParties>
-        {/*
-        <WrapperParties>
-          <TitleMain>Nas próximas horas</TitleMain>
-
-          <FlatList
-            data={DATA}
-            renderItem={renderItem}
-            keyExtractor={(item) => item.id}
-            horizontal
-          />
-        </WrapperParties> */}
-
-        <Parties navigation={navigation} title="Festas temáticas" partyData={getThematic} />
 
       </ScrollView>
 

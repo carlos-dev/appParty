@@ -8,6 +8,7 @@ import * as LoginActions from '../actions/login';
 import * as RegisterActions from '../actions/register';
 import * as ForgotPassActions from '../actions/forgotPass';
 import * as GetThematicActions from '../actions/getThematic';
+import * as PartyNextHoursActions from '../actions/partyNextHours';
 
 function* register(action) {
   try {
@@ -59,20 +60,34 @@ function* getThematic(action) {
 
     const { data } = yield call(api.get, `/dashboard/tematicas?page=${id}`);
 
-    console.log('data', data);
-
     yield put(GetThematicActions.getThematicSuccess(data.parties));
   } catch (error) {
-    console.log('getParties_error', error.response);
+    console.log('getThematic_error', error.response);
     yield put(GetThematicActions.getThematicFailure(error.response));
+  }
+}
+
+function* getPartyNextHours(action) {
+  try {
+    const { id } = action.payload;
+
+    const { data } = yield call(api.get, `/dashboard/proximas-horas?page=${id}`);
+
+    console.log('data', data);
+
+    yield put(PartyNextHoursActions.partyNextHoursSuccess(data.parties));
+  } catch (error) {
+    console.log('getPartyNextHours_error', error.response);
+    yield put(PartyNextHoursActions.partyNextHoursFailure(error.response));
   }
 }
 
 export default function* rootSaga() {
   yield all([
-    takeLatest('GET_THEMATIC_REQUEST', getThematic),
     takeLatest('LOGIN_REQUEST', login),
     takeLatest('REGISTER_REQUEST', register),
+    takeLatest('GET_THEMATIC_REQUEST', getThematic),
+    takeLatest('PARTY_NEXT_HOURS_REQUEST', getPartyNextHours),
     takeLatest('FORGOT_REQUEST', forgotPass),
   ]);
 }

@@ -6,7 +6,7 @@ import getParties from './getParties';
 import login from './login';
 import register from './register';
 import getThematic from './getThematic';
-// import forgotPass from './forgotPass';
+import partyNextHours from './partyNextHours';
 
 export default combineReducers({
   toggleMenu,
@@ -15,4 +15,5 @@ export default combineReducers({
   login,
   register,
   getThematic,
+  partyNextHours,
 });

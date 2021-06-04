@@ -4,19 +4,19 @@ const INITIAL_STATE = {
   error: false,
 };
 
-export default function getThematic(state = INITIAL_STATE, action) {
+export default function partyNextHours(state = INITIAL_STATE, action) {
   switch (action.type) {
-    case 'GET_THEMATIC_REQUEST': {
+    case 'PARTY_NEXT_HOURS_REQUEST': {
       return { ...state, loading: true };
     }
-    case 'GET_THEMATIC_SUCCESS':
+    case 'PARTY_NEXT_HOURS_SUCCESS':
       return {
         ...state,
         parties: action.payload.parties,
         error: false,
         loading: false,
       };
-    case 'GET_THEMATIC_FAILURE':
+    case 'PARTY_NEXT_HOURS_FAILURE':
       return {
         parties: action.payload,
         error: true,
