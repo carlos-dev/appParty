@@ -20,14 +20,12 @@ import {
 const { width } = Dimensions.get('window');
 
 function Item({ navigation, partyData }) {
-  console.log(partyData.item);
-
   return (
     <Cards>
-      <Card activeOpacity={0.9} onPress={() => navigation.navigate('PartyDetail', { id: partyData.item.id })}>
+      <Card activeOpacity={0.9} onPress={() => navigation.navigate('PartyDetail', { slug: partyData.item.party_slug })}>
         <ImgBackground source={party}>
           <Info>
-            <Name>{partyData.item.name}</Name>
+            <Name numberOfLines={1}>{partyData.item.name}</Name>
 
             <Details>
               <ItemDetails>

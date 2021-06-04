@@ -122,7 +122,8 @@ export const Number = styled.Text`
 `;
 
 export const Name = styled.Text`
-  fontSize: ${scaleFontSize(18)}px;
+  width: ${width * 0.2}px;
+  fontSize: ${scaleFontSize(14)}px;
   color: ${(props) => props.theme.primary};
 `;
 

@@ -3,12 +3,12 @@ import {
 } from 'redux-saga/effects';
 import api from '../../services/api';
 
-import * as GetPartiesActions from '../actions/getParties';
 import * as LoginActions from '../actions/login';
 import * as RegisterActions from '../actions/register';
 import * as ForgotPassActions from '../actions/forgotPass';
 import * as GetThematicActions from '../actions/getThematic';
 import * as PartyNextHoursActions from '../actions/partyNextHours';
+import * as PartyHappeningNowActions from '../actions/partyHappeningNow';
 
 function* register(action) {
   try {
@@ -82,12 +82,28 @@ function* getPartyNextHours(action) {
   }
 }
 
+function* getPartyHappeningNow(action) {
+  try {
+    const { id } = action.payload;
+
+    const { data } = yield call(api.get, `/dashboard/acontecendo-agora?page=${id}`);
+
+    console.log('getPartyHappeningNow', data);
+
+    yield put(PartyHappeningNowActions.partyHappeningNowSuccess(data.parties));
+  } catch (error) {
+    console.log('getPartyNextHours_error', error.response);
+    yield put(PartyHappeningNowActions.partyHappeningNowFailure(error.response));
+  }
+}
+
 export default function* rootSaga() {
   yield all([
     takeLatest('LOGIN_REQUEST', login),
     takeLatest('REGISTER_REQUEST', register),
     takeLatest('GET_THEMATIC_REQUEST', getThematic),
     takeLatest('PARTY_NEXT_HOURS_REQUEST', getPartyNextHours),
+    takeLatest('PARTY_HAPPENING_NOW_REQUEST', getPartyHappeningNow),
     takeLatest('FORGOT_REQUEST', forgotPass),
   ]);
 }

@@ -2,6 +2,7 @@ import React from 'react';
 import {
   ScrollView, Dimensions, View, StyleSheet, Linking,
 } from 'react-native';
+import { useRoute } from '@react-navigation/native';
 import styled from 'styled-components/native';
 import MapView from 'react-native-maps';
 
@@ -21,10 +22,13 @@ const { width } = Dimensions.get('window');
 
 export default function PartyDetail({ navigation }) {
   const url = 'https://www.google.com.br/maps/@-23.0152459,-43.4496478,15z';
+  const route = useRoute();
 
   function goToMap() {
     Linking.openURL(url);
   }
+
+  console.log(route);
 
   return (
     <View style={{ flex: 1 }}>

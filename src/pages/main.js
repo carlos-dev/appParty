@@ -9,6 +9,7 @@ import SnackbarComponent from '../components/Snackbar';
 
 import * as GetThematicActions from '../store/actions/getThematic';
 import * as PartyNextHoursActions from '../store/actions/partyNextHours';
+import * as PartyHappeningNowActions from '../store/actions/partyHappeningNow';
 
 import { scaleFontSize } from '../utils/scaleFontSize';
 
@@ -79,7 +80,7 @@ function Item({ item, navigation }) {
 
 export default function Main({ navigation }) {
   const dispatch = useDispatch();
-  const { getThematic, partyNextHours } = useSelector((state) => state);
+  const { getThematic, partyNextHours, partyHappeningNow } = useSelector((state) => state);
 
   const renderItem = ({ item }) => (
     <Item title={item.title} navigation={navigation} />
@@ -91,7 +92,8 @@ export default function Main({ navigation }) {
         await dispatch(GetThematicActions.getThematicRequest(1));
       }
 
-      await dispatch(PartyNextHoursActions.partyNextHoursRequest(1));
+      dispatch(PartyNextHoursActions.partyNextHoursRequest(1));
+      dispatch(PartyHappeningNowActions.partyHappeningNowRequest(1));
     }
 
     getParties();
@@ -112,18 +114,7 @@ export default function Main({ navigation }) {
 
         <Parties navigation={navigation} title="Festas temáticas" partyData={getThematic} />
 
-        <WrapperParties>
-          <TitleMain>Acontecendo agora</TitleMain>
-
-          <FlatList
-            data={DATA}
-            renderItem={renderItem}
-            keyExtractor={(item) => item.id}
-            horizontal
-            nestedScrollEnabled
-          />
-        </WrapperParties>
-
+        <Parties navigation={navigation} title="Acontecendo agora" partyData={partyHappeningNow} />
       </ScrollView>
 
       <SnackbarComponent />
