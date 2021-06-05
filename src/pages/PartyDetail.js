@@ -1,15 +1,18 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   ScrollView, Dimensions, View, StyleSheet, Linking,
 } from 'react-native';
+import { useSelector, useDispatch } from 'react-redux';
 import { useRoute } from '@react-navigation/native';
 import styled from 'styled-components/native';
 import MapView from 'react-native-maps';
 
-import { scaleFontSize } from '../utils/scaleFontSize';
-
 import Header from '../components/Header';
 import SnackbarComponent from '../components/Snackbar';
+import Loading from '../components/Loading';
+
+import { scaleFontSize } from '../utils/scaleFontSize';
+import * as InfoPartyActions from '../store/actions/infoParty';
 
 import {
   Button,
@@ -20,116 +23,163 @@ import {
 
 const { width } = Dimensions.get('window');
 
-export default function PartyDetail({ navigation }) {
-  const url = 'https://www.google.com.br/maps/@-23.0152459,-43.4496478,15z';
-  const route = useRoute();
+function formatDate(partyData) {
+  let hourInit = new Date(partyData.date_init).getUTCHours();
+  let hourClose = new Date(partyData.date_close).getUTCHours();
+  let minutesInit = new Date(partyData.date_init).getUTCMinutes();
+  let minutesClose = new Date(partyData.date_close).getUTCMinutes();
 
-  function goToMap() {
-    Linking.openURL(url);
+  if (hourInit < 10) {
+    hourInit = `0${hourInit}`;
   }
 
-  console.log(route);
+  if (hourClose < 10) {
+    hourClose = `0${hourClose}`;
+  }
+
+  if (minutesInit < 10) {
+    minutesInit = `0${minutesInit}`;
+  }
+
+  if (minutesClose < 10) {
+    minutesClose = `0${minutesClose}`;
+  }
+
+  return (
+    <InfoDescription>
+      {' '}
+      {hourInit}
+      :
+      {minutesInit}
+      {' '}
+      ás
+      {' '}
+      {hourClose}
+      :
+      {minutesClose}
+      {' '}
+    </InfoDescription>
+  );
+}
+
+export default function PartyDetail({ navigation }) {
+  const { infoParty } = useSelector((state) => state);
+  const dispatch = useDispatch();
+  const route = useRoute();
+
+  useEffect(() => {
+    dispatch(InfoPartyActions.infoPartyRequest(route.params.slug));
+  }, []);
+
+  function goToMap(partyData) {
+    console.log(partyData);
+    Linking.openURL(`https://www.google.com.br/maps/@${partyData.latitude},${partyData.longitude},15z`);
+  }
+
+  console.log(infoParty);
 
   return (
     <View style={{ flex: 1 }}>
       <Header navigation={navigation} />
-      <ScrollView>
-        <Container>
-          <Content>
-            <TitleParty>Sua festa é aqui, confira!</TitleParty>
+      {infoParty.loading ? <Loading /> : (
+        <>
+          <ScrollView>
+            <Container>
+              <Content>
+                <TitleParty>{infoParty.party[0].name}</TitleParty>
 
-            <MapContainer>
-              {/* <Map source={mapaImg} /> */}
-              <MapView
-                initialRegion={{
-                  latitude: -23.0163676,
-                  longitude: -43.4631791,
-                  latitudeDelta: 0.05,
-                  longitudeDelta: 0.06,
-                }}
-                style={styles.map}
-              >
-                <MapView.Marker
-                  coordinate={{
-                    latitude: -23.0163676,
-                    longitude: -43.4631791,
-                  }}
-                />
-              </MapView>
-              <BtnLink onPress={() => goToMap(url)}>
-                <TitleMap>Ver rotas no Google Maps</TitleMap>
-              </BtnLink>
-            </MapContainer>
+                <MapContainer>
+                  <MapView
+                    initialRegion={{
+                      latitude: infoParty.party[0].latitude,
+                      longitude: infoParty.party[0].longitude,
+                      latitudeDelta: 0.05,
+                      longitudeDelta: 0.06,
+                    }}
+                    style={styles.map}
+                  >
+                    <MapView.Marker
+                      coordinate={{
+                        latitude: infoParty.party[0].latitude,
+                        longitude: infoParty.party[0].longitude,
+                      }}
+                    />
+                  </MapView>
+                  <BtnLink onPress={() => goToMap(infoParty.party[0])}>
+                    <TitleMap>Ver rotas no Google Maps</TitleMap>
+                  </BtnLink>
+                </MapContainer>
 
-            <InfoParty>
-              <Row>
-                <Column>
-                  <InfoText>Horário</InfoText>
-                  <Label>
-                    <InfoDescription> 19:00 ás 05:00 </InfoDescription>
-                  </Label>
-                </Column>
-                <Column>
-                  <InfoText>Amigos</InfoText>
-                  <InfoDescription>
-                    Voce não tem amigos nessa festa
-                    {' '}
-                  </InfoDescription>
-                </Column>
-              </Row>
-              <Row>
-                <Column>
-                  <InfoText>Ingressos</InfoText>
-                  <InfoDescription>Compre aqui</InfoDescription>
-                </Column>
-              </Row>
-              <Row>
-                <Column style={{ width: '100%' }}>
-                  <InfoText>Descrição do Evento</InfoText>
-                  <Label style={{ height: 'auto', width: '100%' }}>
-                    <InfoDescription>
-                      Novo trojan rouba quase 900 mil senhas de brasileiros: a
-                      descoberta foi feita pela ISH Tecnologia, empresa
-                      brasileira de cibersegurança. O trojan já infectou cerca
-                      de 500 mil vítimas no Brasil através de uma campanha de
-                      phishing por email, cobrando boletos em atraso. Segundo a
-                      ISH, a campanha ainda está ativa e o número de vítimas
-                      deve se multiplicar nos próximos dias. As informações são
-                      da CISO Advisor.
-                    </InfoDescription>
-                  </Label>
-                </Column>
-              </Row>
-              <Row>
-                <Column>
-                  <InfoText>Aproveite</InfoText>
+                <InfoParty>
                   <Row>
                     <Column>
-                      <InfoDescription>Icon</InfoDescription>
+                      <InfoText>Horário</InfoText>
+                      <Label>
+                        {formatDate(infoParty.party[0])}
+                      </Label>
                     </Column>
                     <Column>
-                      <InfoDescription>Icon</InfoDescription>
-                    </Column>
-                    <Column>
-                      <InfoDescription>Icon</InfoDescription>
-                    </Column>
-                    <Column>
-                      <InfoDescription>Icon</InfoDescription>
+                      <InfoText>Pessoas confirmadas</InfoText>
+                      <Label>
+                        <InfoDescription>
+                          {infoParty.party[0].presences.length}
+                        </InfoDescription>
+                      </Label>
                     </Column>
                   </Row>
-                </Column>
-              </Row>
-            </InfoParty>
-            <Button onPress={() => navigation.navigate('Main')} style={{ marginBottom: '25%' }}>
-              <TextButton>Eu vou</TextButton>
-            </Button>
-          </Content>
-        </Container>
-      </ScrollView>
+                  <Row>
+                    <Column>
+                      <InfoText>Ingressos</InfoText>
+                      <Button onPress={() => Linking.openURL(infoParty.party[0].ticket_link)}>
+                        <TextButton>Comprar</TextButton>
+                      </Button>
+                    </Column>
+                  </Row>
+                  <Row>
+                    <Column style={{ width: '100%' }}>
+                      <InfoText>Descrição do Evento</InfoText>
+                      <Label style={{ height: 'auto', width: '100%' }}>
+                        <InfoDescription>
+                          {infoParty.party[0].description}
+                        </InfoDescription>
+                      </Label>
+                    </Column>
+                  </Row>
+                  <Row>
+                    <Column style={{ width: '100%' }}>
+                      <InfoText>Endereço</InfoText>
+                      <Label style={{ width: '100%', textAlign: 'left' }}>
+                        <InfoDescription>
+                          {infoParty.party[0].address}
+                          ,
+                          {' '}
+                          {infoParty.party[0].number}
+                          ,
+                          {' '}
+                          {infoParty.party[0].district}
+                          ,
+                          {' '}
+                          {infoParty.party[0].city}
+                          ,
+                          {' '}
+                          {infoParty.party[0].state}
+                        </InfoDescription>
+                      </Label>
+                    </Column>
+                  </Row>
+                </InfoParty>
+                <Button onPress={() => navigation.navigate('Main')} style={{ marginBottom: '25%', marginTop: '10%', width: '100%' }}>
+                  <TextButton>Eu vou</TextButton>
+                </Button>
+              </Content>
+            </Container>
+          </ScrollView>
 
-      <Footer activeOpacity={0.7} onPress={() => navigation.navigate('Main')}>
-        <TitleFooter>Voltar</TitleFooter>
-      </Footer>
+          <Footer activeOpacity={0.7} onPress={() => navigation.navigate('Main')}>
+            <TitleFooter>Voltar</TitleFooter>
+          </Footer>
+        </>
+      )}
 
       <SnackbarComponent />
     </View>
@@ -143,7 +193,7 @@ export const Container = styled.View`
 
 export const Content = styled.View`
   align-items: center;
-  width: ${width * 0.9};
+  width: ${width * 0.9}px;
 `;
 
 export const TitleParty = styled.Text`
@@ -158,18 +208,18 @@ export const BtnLink = styled.TouchableOpacity`
 `;
 
 export const TitleMap = styled.Text`
-  color: ${(props) => props.theme.background};
+  color: ${(props) => props.theme.primary};
   font-size: ${scaleFontSize(15)}px;
 `;
 
 export const InfoText = styled.Text`
   color: ${(props) => props.theme.primary};
-  font-size: ${scaleFontSize(18)}px;
+  font-size: ${scaleFontSize(15)}px;
   padding: 0 10px 10px;
 `;
 
 export const InfoDescription = styled.Text`
-  color: ${(props) => props.theme.background};
+  color: ${(props) => props.theme.primary};
   font-size: ${scaleFontSize(13)}px;
   padding: 0 10px;
 `;
@@ -188,7 +238,7 @@ export const MapContainer = styled.View`
   display: flex;
   align-items: center;
   background-color: #3e3b47;
-  height: ${width * 0.9};
+  height: ${width * 0.9}px;
   width: 100%;
   border-radius: 20px;
   overflow: hidden;

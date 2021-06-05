@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
-import { Dimensions, FlatList } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import styled from 'styled-components/native';
 import IconSearch from 'react-native-vector-icons/EvilIcons';
 
 import Header from '../components/Header';
 import SnackbarComponent from '../components/Snackbar';
+import Parties from '../components/Parties';
 
 import * as GetThematicActions from '../store/actions/getThematic';
 import * as PartyNextHoursActions from '../store/actions/partyNextHours';
@@ -13,90 +13,16 @@ import * as PartyHappeningNowActions from '../store/actions/partyHappeningNow';
 
 import { scaleFontSize } from '../utils/scaleFontSize';
 
-import party from '../assets/images/party.jpg';
-
-import {
-  Container,
-  TitleMain,
-  globalStyles,
-  Cards,
-  Card,
-  ImgBackground,
-  Info,
-  Details,
-  ItemDetails,
-  TextDetails,
-  Number,
-  Name,
-} from '../styles/globalStyles';
-import Parties from '../components/Parties';
-
-const { width } = Dimensions.get('window');
-
-const DATA = [
-  {
-    id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-    title: 'First Item',
-  },
-  {
-    id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-    title: 'Second Item',
-  },
-  {
-    id: '58694a0f-3da1-471f-bd96-145571e29d72',
-    title: 'Third Item',
-  },
-];
-
-function Item({ item, navigation }) {
-  return (
-    <Cards>
-      <Card activeOpacity={0.9} onPress={() => navigation.navigate('PartyDetail')}>
-        <ImgBackground source={party}>
-          <Info>
-            <Name>Color Fest</Name>
-
-            <Details>
-              <ItemDetails>
-                <TextDetails>Confirmados</TextDetails>
-                <Number>10</Number>
-              </ItemDetails>
-
-              <ItemDetails>
-                <TextDetails>Estilo da festa</TextDetails>
-                <TextDetails>Paint Fest</TextDetails>
-              </ItemDetails>
-
-              <ItemDetails>
-                <TextDetails>Rolando...</TextDetails>
-              </ItemDetails>
-            </Details>
-          </Info>
-        </ImgBackground>
-      </Card>
-    </Cards>
-  );
-}
+import { Container, globalStyles } from '../styles/globalStyles';
 
 export default function Main({ navigation }) {
   const dispatch = useDispatch();
   const { getThematic, partyNextHours, partyHappeningNow } = useSelector((state) => state);
 
-  const renderItem = ({ item }) => (
-    <Item title={item.title} navigation={navigation} />
-  );
-
   useEffect(() => {
-    async function getParties() {
-      if (!getThematic.thematicData) {
-        await dispatch(GetThematicActions.getThematicRequest(1));
-      }
-
-      dispatch(PartyNextHoursActions.partyNextHoursRequest(1));
-      dispatch(PartyHappeningNowActions.partyHappeningNowRequest(1));
-    }
-
-    getParties();
+    dispatch(GetThematicActions.getThematicRequest(1));
+    dispatch(PartyNextHoursActions.partyNextHoursRequest(1));
+    dispatch(PartyHappeningNowActions.partyHappeningNowRequest(1));
   }, []);
 
   return (

@@ -7,6 +7,8 @@ import register from './register';
 import getThematic from './getThematic';
 import partyNextHours from './partyNextHours';
 import partyHappeningNow from './partyHappeningNow';
+import infoParty from './infoParty';
+import searchParty from './searchParty';
 
 export default combineReducers({
   toggleMenu,
@@ -16,4 +18,6 @@ export default combineReducers({
   getThematic,
   partyNextHours,
   partyHappeningNow,
+  infoParty,
+  searchParty,
 });

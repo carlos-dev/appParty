@@ -61,7 +61,6 @@ export default function Parties({ navigation, title, partyData }) {
       {partyData.loading ? (
         <ContainerLoading>
           <ActivityIndicator color="#777" size="large" />
-
         </ContainerLoading>
       ) : (
         <FlatList

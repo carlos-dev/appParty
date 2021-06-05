@@ -9,6 +9,8 @@ import * as ForgotPassActions from '../actions/forgotPass';
 import * as GetThematicActions from '../actions/getThematic';
 import * as PartyNextHoursActions from '../actions/partyNextHours';
 import * as PartyHappeningNowActions from '../actions/partyHappeningNow';
+import * as GetInfoPartyActions from '../actions/infoParty';
+import * as SearchPartyActions from '../actions/searchParty';
 
 function* register(action) {
   try {
@@ -97,6 +99,34 @@ function* getPartyHappeningNow(action) {
   }
 }
 
+function* getInfoParty(action) {
+  try {
+    const { slug } = action.payload;
+
+    const { data } = yield call(api.get, `/dashboard/party/${slug}`);
+
+    console.log('getInfoParty', data);
+
+    yield put(GetInfoPartyActions.infoPartySuccess(data.single));
+  } catch (error) {
+    console.log('getPartyNextHours_error', error.response);
+    yield put(GetInfoPartyActions.infoPartyFailure(error.response));
+  }
+}
+
+function* searchParty(action) {
+  try {
+    const { query } = action.payload;
+
+    const { data } = yield call(api.get, `/dashboard/search?query=${query}`);
+
+    yield put(SearchPartyActions.searchPartySuccess(data.parties));
+  } catch (error) {
+    console.log('searchParty_error', error.response);
+    yield put(SearchPartyActions.searchPartyFailure(error.response));
+  }
+}
+
 export default function* rootSaga() {
   yield all([
     takeLatest('LOGIN_REQUEST', login),
@@ -104,6 +134,8 @@ export default function* rootSaga() {
     takeLatest('GET_THEMATIC_REQUEST', getThematic),
     takeLatest('PARTY_NEXT_HOURS_REQUEST', getPartyNextHours),
     takeLatest('PARTY_HAPPENING_NOW_REQUEST', getPartyHappeningNow),
+    takeLatest('INFO_PARTY_REQUEST', getInfoParty),
     takeLatest('FORGOT_REQUEST', forgotPass),
+    takeLatest('SEARCH_PARTY_REQUEST', searchParty),
   ]);
 }
