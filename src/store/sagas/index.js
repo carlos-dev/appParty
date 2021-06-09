@@ -12,6 +12,7 @@ import * as PartyHappeningNowActions from '../actions/partyHappeningNow';
 import * as GetInfoPartyActions from '../actions/infoParty';
 import * as SearchPartyActions from '../actions/searchParty';
 import * as ProfileActions from '../actions/profile';
+import * as UpdateProfileActions from '../actions/updateProfile';
 
 function* register(action) {
   try {
@@ -139,6 +140,19 @@ function* profile() {
   }
 }
 
+function* updadeProfile(action) {
+  const { profileData } = action.payload;
+
+  try {
+    const { data } = yield call(api.post, '/dashboard/profile/update', profileData);
+
+    yield put(UpdateProfileActions.updateProfileSuccess(data));
+  } catch (error) {
+    console.log('updadeProfile_error', error.response);
+    yield put(UpdateProfileActions.updateProfileFailure(error.response));
+  }
+}
+
 export default function* rootSaga() {
   yield all([
     takeLatest('LOGIN_REQUEST', login),
@@ -150,5 +164,6 @@ export default function* rootSaga() {
     takeLatest('FORGOT_REQUEST', forgotPass),
     takeLatest('SEARCH_PARTY_REQUEST', searchParty),
     takeLatest('PROFILE_REQUEST', profile),
+    takeLatest('UPDATE_PROFILE_REQUEST', updadeProfile),
   ]);
 }

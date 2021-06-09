@@ -11,15 +11,13 @@ import IconArrow from 'react-native-vector-icons/AntDesign';
 import IconPower from 'react-native-vector-icons/Feather';
 import IconCamera from 'react-native-vector-icons/Feather';
 import IconUser from 'react-native-vector-icons/Feather';
-import IconEmail from 'react-native-vector-icons/MaterialCommunityIcons';
-import IconLock from 'react-native-vector-icons/Feather';
-import IconCalendar from 'react-native-vector-icons/AntDesign';
 
 import SnackbarComponent from '../components/Snackbar';
 import ModalComponent from '../components/Modal';
 
 import * as ProfileActions from '../store/actions/profile';
 import * as ModalVisibleActions from '../store/actions/modalVisible';
+import * as UpdateProfileActions from '../store/actions/updateProfile';
 
 import photoExample from '../assets/images/profile.jpg';
 
@@ -66,7 +64,14 @@ export default function Profile({ navigation }) {
   }
 
   function updateData() {
-    const obj = {};
+    const obj = {
+      name,
+      bio: null,
+    };
+
+    console.log(obj);
+
+    dispatch(UpdateProfileActions.updateProfileRequest(obj));
   }
 
   return (

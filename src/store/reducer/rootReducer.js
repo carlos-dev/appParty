@@ -10,6 +10,7 @@ import partyHappeningNow from './partyHappeningNow';
 import infoParty from './infoParty';
 import searchParty from './searchParty';
 import profile from './profile';
+import updateProfile from './updateProfile';
 
 export default combineReducers({
   toggleMenu,
@@ -22,4 +23,5 @@ export default combineReducers({
   infoParty,
   searchParty,
   profile,
+  updateProfile,
 });
