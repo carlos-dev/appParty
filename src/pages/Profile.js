@@ -1,6 +1,8 @@
 /* eslint-disable import/no-duplicates */
-import React, { useState } from 'react';
-import { Dimensions, ScrollView, TouchableOpacity } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import {
+  Dimensions, ScrollView, TouchableOpacity, ActivityIndicator,
+} from 'react-native';
 import styled from 'styled-components/native';
 import * as ImagePicker from 'react-native-image-picker';
 import { useSelector, useDispatch } from 'react-redux';
@@ -11,10 +13,12 @@ import IconCamera from 'react-native-vector-icons/Feather';
 import IconUser from 'react-native-vector-icons/Feather';
 import IconEmail from 'react-native-vector-icons/MaterialCommunityIcons';
 import IconLock from 'react-native-vector-icons/Feather';
+import IconCalendar from 'react-native-vector-icons/AntDesign';
 
 import SnackbarComponent from '../components/Snackbar';
 import ModalComponent from '../components/Modal';
 
+import * as ProfileActions from '../store/actions/profile';
 import * as ModalVisibleActions from '../store/actions/modalVisible';
 
 import photoExample from '../assets/images/profile.jpg';
@@ -28,7 +32,20 @@ const { width, height } = Dimensions.get('window');
 
 export default function Profile({ navigation }) {
   const [photo, setPhoto] = useState(null);
+  const [name, setName] = useState(null);
+
   const dispatch = useDispatch();
+  const { profile } = useSelector((state) => state);
+
+  useEffect(() => {
+    dispatch(ProfileActions.profileRequest());
+  }, []);
+
+  useEffect(() => {
+    if (profile.profileData) {
+      setName(profile.profileData.name);
+    }
+  }, [profile]);
 
   function takePicture() {
     const options = {
@@ -48,6 +65,10 @@ export default function Profile({ navigation }) {
     });
   }
 
+  function updateData() {
+    const obj = {};
+  }
+
   return (
     <Container>
       <ModalComponent navigation={navigation} />
@@ -64,65 +85,41 @@ export default function Profile({ navigation }) {
           </TouchableOpacity>
         </Header>
 
-        <WrapperPhoto>
-          <Photo source={photo || photoExample} />
+        {profile.loading || profile.error ? (
+          <ContainerLoading>
+            <ActivityIndicator color="#777" size="large" />
+          </ContainerLoading>
+        ) : (
+          <>
+            <WrapperPhoto>
+              <Photo source={photo || photoExample} />
 
-          <BtnPhoto activeOpacity={0.7} onPress={takePicture}>
-            <IconCamera name="camera" size={scaleFontSize(20)} color="#fff" />
-          </BtnPhoto>
+              <BtnPhoto activeOpacity={0.7} onPress={takePicture}>
+                <IconCamera name="camera" size={scaleFontSize(20)} color="#fff" />
+              </BtnPhoto>
 
-        </WrapperPhoto>
+            </WrapperPhoto>
 
-        <Form>
-          <Inputs>
-            <ViewInput>
-              <IconUser name="user" color="#666360" style={globalStyles.iconForm} />
-              <Input
-                placeholder="Nome"
-                placeholderTextColor="#535466"
-              />
-            </ViewInput>
+            <Form>
+              <Inputs>
+                <ViewInput>
+                  <IconUser name="user" color="#666360" style={globalStyles.iconForm} />
+                  <Input
+                    placeholder="Nome"
+                    placeholderTextColor="#535466"
+                    value={name}
+                    onChangeText={(text) => setName(text)}
+                  />
+                </ViewInput>
 
-            <ViewInput>
-              <IconEmail name="email-outline" color="#666360" style={globalStyles.iconForm} />
-              <Input
-                placeholder="E-mail"
-                placeholderTextColor="#535466"
-              />
-            </ViewInput>
+              </Inputs>
 
-            <ViewInput>
-              <IconLock name="lock" color="#666360" style={globalStyles.iconForm} />
-              <Input
-                placeholder="Senha atual"
-                placeholderTextColor="#535466"
-                secureTextEntry
-              />
-            </ViewInput>
-
-            <ViewInput>
-              <IconLock name="lock" color="#666360" style={globalStyles.iconForm} />
-              <Input
-                placeholder="Nova senha"
-                placeholderTextColor="#535466"
-                secureTextEntry
-              />
-            </ViewInput>
-
-            <ViewInput>
-              <IconLock name="lock" color="#666360" style={globalStyles.iconForm} />
-              <Input
-                placeholder="Confirmar senha"
-                placeholderTextColor="#535466"
-                secureTextEntry
-              />
-            </ViewInput>
-          </Inputs>
-
-          <BtnConfirm>
-            <TextButton>Salvar</TextButton>
-          </BtnConfirm>
-        </Form>
+              <BtnConfirm onPress={updateData}>
+                <TextButton>Salvar</TextButton>
+              </BtnConfirm>
+            </Form>
+          </>
+        )}
       </ScrollView>
 
       <SnackbarComponent />
@@ -162,7 +159,6 @@ export const Form = styled.View`
   alignItems: center;
   justifyContent: space-between;
   paddingBottom: 35%;
-  height: 75%;
 `;
 
 export const Inputs = styled.View`
@@ -193,4 +189,11 @@ export const BtnConfirm = styled.TouchableOpacity`
 export const TextButton = styled.Text`
   color: #fff;
   fontSize: ${scaleFontSize(13)}px;
+`;
+
+export const ContainerLoading = styled.View`
+  width:  100%;
+  height: 100%;
+  justifyContent: center;
+  alignItems: center;
 `;

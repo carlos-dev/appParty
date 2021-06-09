@@ -9,6 +9,7 @@ import partyNextHours from './partyNextHours';
 import partyHappeningNow from './partyHappeningNow';
 import infoParty from './infoParty';
 import searchParty from './searchParty';
+import profile from './profile';
 
 export default combineReducers({
   toggleMenu,
@@ -20,4 +21,5 @@ export default combineReducers({
   partyHappeningNow,
   infoParty,
   searchParty,
+  profile,
 });

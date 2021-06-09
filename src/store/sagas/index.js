@@ -11,6 +11,7 @@ import * as PartyNextHoursActions from '../actions/partyNextHours';
 import * as PartyHappeningNowActions from '../actions/partyHappeningNow';
 import * as GetInfoPartyActions from '../actions/infoParty';
 import * as SearchPartyActions from '../actions/searchParty';
+import * as ProfileActions from '../actions/profile';
 
 function* register(action) {
   try {
@@ -127,6 +128,17 @@ function* searchParty(action) {
   }
 }
 
+function* profile() {
+  try {
+    const { data } = yield call(api.get, '/dashboard/profile');
+
+    yield put(ProfileActions.profileSuccess(data.user));
+  } catch (error) {
+    console.log('profile_error', error.response);
+    yield put(ProfileActions.profileFailure(error.response));
+  }
+}
+
 export default function* rootSaga() {
   yield all([
     takeLatest('LOGIN_REQUEST', login),
@@ -137,5 +149,6 @@ export default function* rootSaga() {
     takeLatest('INFO_PARTY_REQUEST', getInfoParty),
     takeLatest('FORGOT_REQUEST', forgotPass),
     takeLatest('SEARCH_PARTY_REQUEST', searchParty),
+    takeLatest('PROFILE_REQUEST', profile),
   ]);
 }

@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { ScrollView } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import styled from 'styled-components/native';
 import IconSearch from 'react-native-vector-icons/EvilIcons';
@@ -77,8 +78,4 @@ export const BtnSearch = styled.TouchableOpacity`
   marginBottom: 2%;
   flexDirection: row;
   padding: 3% 2%;
-`;
-
-export const ScrollView = styled.ScrollView`
-  
 `;

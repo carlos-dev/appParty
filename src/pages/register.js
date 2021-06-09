@@ -1,3 +1,5 @@
+/* eslint-disable react/jsx-props-no-spreading */
+/* eslint-disable import/no-duplicates */
 import React, { useContext, useEffect } from 'react';
 import { Dimensions } from 'react-native';
 import styled, { ThemeContext } from 'styled-components/native';
