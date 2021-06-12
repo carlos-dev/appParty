@@ -140,13 +140,15 @@ function* profile() {
   }
 }
 
-function* updadeProfile(action) {
+function* updateProfile(action) {
   const { profileData } = action.payload;
 
   try {
     const { data } = yield call(api.post, '/dashboard/profile/update', profileData);
 
     yield put(UpdateProfileActions.updateProfileSuccess(data));
+
+    console.log(data);
   } catch (error) {
     console.log('updadeProfile_error', error.response);
     yield put(UpdateProfileActions.updateProfileFailure(error.response));
@@ -164,6 +166,6 @@ export default function* rootSaga() {
     takeLatest('FORGOT_REQUEST', forgotPass),
     takeLatest('SEARCH_PARTY_REQUEST', searchParty),
     takeLatest('PROFILE_REQUEST', profile),
-    takeLatest('UPDATE_PROFILE_REQUEST', updadeProfile),
+    takeLatest('UPDATE_PROFILE_REQUEST', updateProfile),
   ]);
 }

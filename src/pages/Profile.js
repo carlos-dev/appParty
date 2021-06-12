@@ -6,6 +6,7 @@ import {
 import styled from 'styled-components/native';
 import * as ImagePicker from 'react-native-image-picker';
 import { useSelector, useDispatch } from 'react-redux';
+import { Snackbar } from 'react-native-paper';
 
 import IconArrow from 'react-native-vector-icons/AntDesign';
 import IconPower from 'react-native-vector-icons/Feather';
@@ -30,6 +31,7 @@ const { width, height } = Dimensions.get('window');
 
 export default function Profile({ navigation }) {
   const [photo, setPhoto] = useState(null);
+  const [visible, setVisible] = useState(false);
   const [name, setName] = useState(null);
 
   const dispatch = useDispatch();
@@ -83,8 +85,21 @@ export default function Profile({ navigation }) {
     };
 
     dispatch(UpdateProfileActions.updateProfileRequest(obj));
-    console.log(updateProfile);
+
+    if (updateProfile.profileData) {
+      if (updateProfile.message === 'Usuário atualizado com sucesso!') {
+        console.log(updateProfile);
+        setVisible(true);
+
+        // setTimeout(() => {
+        //   setVisible(!visible);
+        // }, 5000);
+      }
+    }
   }
+
+  console.log(visible);
+  const onDismissSnackBar = () => setVisible(false);
 
   return (
     <Container>
@@ -128,16 +143,31 @@ export default function Profile({ navigation }) {
                     onChangeText={(text) => setName(text)}
                   />
                 </ViewInput>
-
               </Inputs>
 
               <BtnConfirm onPress={updateData}>
                 <TextButton>Salvar</TextButton>
+                {updateProfile.loading && <ActivityIndicator style={{ marginLeft: '3%' }} color="#fff" size="small" />}
               </BtnConfirm>
             </Form>
           </>
         )}
+
       </ScrollView>
+
+      <Snackbar
+        visible
+        onDismiss={onDismissSnackBar}
+        style={{ backgroundColor: '#088710' }}
+        action={{
+          label: '',
+          onPress: () => {
+            // Do something
+          },
+        }}
+      >
+        Dados atualizados com sucesso
+      </Snackbar>
 
       <SnackbarComponent />
     </Container>
@@ -201,6 +231,7 @@ export const BtnConfirm = styled.TouchableOpacity`
   borderRadius: 8px;
   justifyContent: center;
   alignItems: center;
+  flexDirection: row;
 `;
 
 export const TextButton = styled.Text`
