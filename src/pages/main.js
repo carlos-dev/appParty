@@ -37,11 +37,11 @@ export default function Main({ navigation }) {
       </BtnSearch>
 
       <ScrollView>
-        <Parties navigation={navigation} title="Próximas horas" partyData={partyNextHours} />
+        <Parties navigation={navigation} title="Acontecendo agora" partyData={partyHappeningNow} id="1" />
 
-        <Parties navigation={navigation} title="Festas temáticas" partyData={getThematic} />
+        <Parties navigation={navigation} title="Próximas horas" partyData={partyNextHours} id="2" />
 
-        <Parties navigation={navigation} title="Acontecendo agora" partyData={partyHappeningNow} />
+        <Parties navigation={navigation} title="Festas temáticas" partyData={getThematic} id="3" />
       </ScrollView>
 
       <SnackbarComponent />

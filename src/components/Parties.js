@@ -1,6 +1,13 @@
 import React from 'react';
-import { Dimensions, FlatList, ActivityIndicator } from 'react-native';
+import {
+  Dimensions, FlatList, ActivityIndicator, TouchableOpacity,
+} from 'react-native';
 import styled from 'styled-components/native';
+
+import { useDispatch } from 'react-redux';
+import * as GetThematicActions from '../store/actions/getThematic';
+import * as PartyNextHoursActions from '../store/actions/partyNextHours';
+import * as PartyHappeningNowActions from '../store/actions/partyHappeningNow';
 
 import party from '../assets/images/party.jpg';
 
@@ -16,6 +23,8 @@ import {
   Number,
   Name,
 } from '../styles/globalStyles';
+
+import { scaleFontSize } from '../utils/scaleFontSize';
 
 const { width } = Dimensions.get('window');
 
@@ -49,14 +58,29 @@ function Item({ navigation, partyData }) {
   );
 }
 
-export default function Parties({ navigation, title, partyData }) {
-  const renderItem = (data) => (
-    <Item navigation={navigation} partyData={data} />
-  );
+export default function Parties({
+  navigation, title, partyData, id,
+}) {
+  const dispatch = useDispatch();
+
+  function renderItem(data) {
+    return (
+      <Item navigation={navigation} partyData={data} />
+    );
+  }
 
   return (
     <WrapperParties>
-      <TitleMain>{title}</TitleMain>
+      <Header>
+        <Header>
+          <TitleMain>{title}</TitleMain>
+
+          <TouchableOpacity activeOpacity={0.7} onPress={() => navigation.navigate('TypeParty', { id, title })}>
+            <TextSeeMore>Ver Mais</TextSeeMore>
+          </TouchableOpacity>
+        </Header>
+
+      </Header>
 
       {partyData.loading ? (
         <ContainerLoading>
@@ -80,6 +104,18 @@ export const WrapperParties = styled.View`
   paddingTop: 10%;
   marginBottom: 1%;
   flex: 1;
+`;
+
+export const Header = styled.View`
+  flexDirection: row;
+  justifyContent: space-between;
+  width: 100%;
+  align-items: center;
+`;
+
+export const TextSeeMore = styled.Text`
+  fontSize: ${scaleFontSize(19)}px;
+  color: ${(props) => props.theme.primary};
 `;
 
 export const ContainerLoading = styled.View`

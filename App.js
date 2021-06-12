@@ -16,6 +16,7 @@ import Profile from './src/pages/Profile';
 import RecoverPassword from './src/pages/RecoverPassword';
 import SearchParty from './src/pages/SearchParty';
 import PartyTheme from './src/pages/PartyTheme';
+import TypeParty from './src/pages/TypeParty';
 
 import store from './src/store';
 
@@ -37,6 +38,7 @@ function StackNavigation() {
         <Stack.Screen options={{ headerShown: false }} name="Profile" component={Profile} />
         <Stack.Screen options={{ headerShown: false }} name="PartyDetail" component={PartyDetail} />
         <Stack.Screen options={{ headerShown: false }} name="SearchParty" component={SearchParty} />
+        <Stack.Screen options={{ headerShown: false }} name="TypeParty" component={TypeParty} />
       </Stack.Navigator>
     </NavigationContainer>
   );

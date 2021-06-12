@@ -72,7 +72,7 @@ export const TitleFooter = styled.Text`
 
 export const TitleMain = styled.Text`
   fontSize: ${scaleFontSize(22)}px;
-  color: #fff;
+  color: ${(props) => props.theme.primary};
   marginBottom: 4%;
   marginLeft: 1%;
 `;

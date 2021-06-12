@@ -33,7 +33,7 @@ export default function Profile({ navigation }) {
   const [name, setName] = useState(null);
 
   const dispatch = useDispatch();
-  const { profile } = useSelector((state) => state);
+  const { profile, updateProfile } = useSelector((state) => state);
 
   useEffect(() => {
     dispatch(ProfileActions.profileRequest());
@@ -46,8 +46,20 @@ export default function Profile({ navigation }) {
   }, [profile]);
 
   function takePicture() {
+    // const options = {
+    //   mediaType: 'photo',
+    // };
+
     const options = {
-      mediaType: 'photo',
+      title: 'Selecione uma opção',
+      cancelButtonTitle: 'Cancelar',
+      takePhotoButtonTitle: 'Tirar uma foto',
+      chooseFromLibraryButtonTitle: 'Escolher foto da galeria',
+      quality: 0.5,
+      storageOptions: {
+        skipBackup: true,
+        path: 'images',
+      },
     };
 
     ImagePicker.launchImageLibrary(options, (response) => {
@@ -57,7 +69,8 @@ export default function Profile({ navigation }) {
         console.log('ImagePicker Error: ', response.error);
       } else {
         const source = { uri: response.uri };
-
+        const sourceSplit = source.uri.split('/');
+        console.log(sourceSplit[sourceSplit.length - 1]);
         setPhoto(source);
       }
     });
@@ -69,9 +82,8 @@ export default function Profile({ navigation }) {
       bio: null,
     };
 
-    console.log(obj);
-
     dispatch(UpdateProfileActions.updateProfileRequest(obj));
+    console.log(updateProfile);
   }
 
   return (
