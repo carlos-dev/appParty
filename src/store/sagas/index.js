@@ -16,6 +16,7 @@ import * as SearchPartyActions from '../actions/searchParty';
 import * as ProfileActions from '../actions/profile';
 import * as UpdateProfileActions from '../actions/updateProfile';
 import * as UploadAvatarActions from '../actions/uploadAvatar';
+import * as TriggerPresenceActions from '../actions/triggerPresence';
 
 function* register(action) {
   try {
@@ -83,8 +84,6 @@ function* getPartyNextHours(action) {
 
     const { data } = yield call(api.get, `/dashboard/proximas-horas?page=${id}`);
 
-    console.log('data', data);
-
     yield put(PartyNextHoursActions.partyNextHoursSuccess(data.parties));
   } catch (error) {
     console.log('getPartyNextHours_error', error.response);
@@ -112,8 +111,6 @@ function* getInfoParty(action) {
     const { slug } = action.payload;
 
     const { data } = yield call(api.get, `/dashboard/party/${slug}`);
-
-    console.log('getInfoParty', data);
 
     yield put(GetInfoPartyActions.infoPartySuccess(data.single));
   } catch (error) {
@@ -161,6 +158,21 @@ function* updateProfile(action) {
   }
 }
 
+function* triggerPresence(action) {
+  const { slug } = action.payload;
+
+  try {
+    const response = yield call(api.get, `/dashboard/presence/${slug}`);
+
+    yield put(TriggerPresenceActions.triggerPresenceRequest(response));
+
+    console.log(response);
+  } catch (error) {
+    console.log('triggerPresence_error', error.response);
+    yield put(TriggerPresenceActions.triggerPresenceFailure(error.response));
+  }
+}
+
 function* uploadAvatar(action) {
   const { avatarData } = action.payload;
 
@@ -173,7 +185,7 @@ function* uploadAvatar(action) {
 
     console.log(response);
   } catch (error) {
-    console.log('updadeAvatar_error', error.response);
+    console.log('updateAvatar_error', error.response);
     yield put(UploadAvatarActions.updateAvatarFailure(error.response));
   }
 }
@@ -191,5 +203,6 @@ export default function* rootSaga() {
     takeLatest('PROFILE_REQUEST', profile),
     takeLatest('UPDATE_PROFILE_REQUEST', updateProfile),
     takeLatest('UPDATE_AVATAR_REQUEST', uploadAvatar),
+    takeLatest('TRIGGER_PRESENCE_REQUEST', triggerPresence),
   ]);
 }

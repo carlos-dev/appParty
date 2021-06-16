@@ -28,9 +28,9 @@ export default function Main({ navigation }) {
       console.log('token', token);
     }
 
-    BackHandler.addEventListener('hardwareBackPress', () => {
-      BackHandler.exitApp();
-    });
+    // BackHandler.addEventListener('hardwareBackPress', () => {
+    //   BackHandler.exitApp();
+    // });
 
     setTimeout(() => {
       dispatch(GetThematicActions.getThematicRequest(1));

@@ -12,6 +12,7 @@ import searchParty from './searchParty';
 import profile from './profile';
 import updateProfile from './updateProfile';
 import uploadAvatar from './uploadAvatar';
+import triggerPresence from './triggerPresence';
 
 export default combineReducers({
   toggleMenu,
@@ -26,4 +27,5 @@ export default combineReducers({
   profile,
   updateProfile,
   uploadAvatar,
+  triggerPresence,
 });

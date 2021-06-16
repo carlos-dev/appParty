@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   ScrollView, Dimensions, View, StyleSheet, Linking,
 } from 'react-native';
@@ -7,11 +7,13 @@ import { useRoute } from '@react-navigation/native';
 import styled from 'styled-components/native';
 import MapView from 'react-native-maps';
 
+import { Snackbar } from 'react-native-paper';
 import Header from '../components/Header';
 import SnackbarComponent from '../components/Snackbar';
 import Loading from '../components/Loading';
 
 import { scaleFontSize } from '../utils/scaleFontSize';
+import * as TriggerPresenceActions from '../store/actions/triggerPresence';
 import * as InfoPartyActions from '../store/actions/infoParty';
 
 import {
@@ -65,6 +67,9 @@ function formatDate(partyData) {
 }
 
 export default function PartyDetail({ navigation }) {
+  const [visibleConfirmed, setVisibleConfirmed] = useState(false);
+  const [visibleCanceled, setVisibleCanceled] = useState(false);
+
   const { infoParty } = useSelector((state) => state);
   const dispatch = useDispatch();
   const route = useRoute();
@@ -78,7 +83,24 @@ export default function PartyDetail({ navigation }) {
     Linking.openURL(`https://www.google.com.br/maps/@${partyData.latitude},${partyData.longitude},15z`);
   }
 
-  console.log(infoParty);
+  function triggerPresence() {
+    dispatch(TriggerPresenceActions.triggerPresenceRequest(infoParty.party[0].party_slug));
+
+    dispatch(InfoPartyActions.infoPartyRequest(route.params.slug));
+
+    setTimeout(() => {
+      if (!JSON.parse(infoParty.party[0].presences).length) {
+        setVisibleConfirmed(true);
+        setVisibleCanceled(false);
+      } else {
+        setVisibleCanceled(true);
+        setVisibleConfirmed(false);
+      }
+    }, 2000);
+  }
+
+  const onDismissSnackBar = () => setVisibleConfirmed(false);
+  const onCanceledSnackBar = () => setVisibleCanceled(false);
 
   return (
     <View style={{ flex: 1 }}>
@@ -125,7 +147,7 @@ export default function PartyDetail({ navigation }) {
                       <InfoText>Pessoas confirmadas</InfoText>
                       <Label>
                         <InfoDescription>
-                          {infoParty.party[0].presences.length}
+                          {JSON.parse(infoParty.party[0].presences).length}
                         </InfoDescription>
                       </Label>
                     </Column>
@@ -171,12 +193,49 @@ export default function PartyDetail({ navigation }) {
                     </Column>
                   </Row>
                 </InfoParty>
-                <Button onPress={() => navigation.navigate('Main')} style={{ marginBottom: '25%', marginTop: '10%', width: '100%' }}>
-                  <TextButton>Eu vou</TextButton>
-                </Button>
+
+                {JSON.parse(infoParty.party[0].presences).length ? (
+                  <>
+                    <Button onPress={triggerPresence} style={{ marginBottom: '25%', marginTop: '10%', width: '100%' }}>
+                      <TextButton>Não vou</TextButton>
+                    </Button>
+                  </>
+                ) : (
+                  <Button onPress={triggerPresence} style={{ marginBottom: '25%', marginTop: '10%', width: '100%' }}>
+                    <TextButton>Eu vou</TextButton>
+                  </Button>
+                )}
               </Content>
             </Container>
           </ScrollView>
+
+          <Snackbar
+            visible={visibleConfirmed}
+            onDismiss={onDismissSnackBar}
+            style={{ backgroundColor: '#088710' }}
+            action={{
+              label: '',
+              onPress: () => {
+                // Do something
+              },
+            }}
+          >
+            Presença Confirmada
+          </Snackbar>
+
+          <Snackbar
+            visible={visibleCanceled}
+            onDismiss={onCanceledSnackBar}
+            style={{ backgroundColor: '#dc3232' }}
+            action={{
+              label: '',
+              onPress: () => {
+                // Do something
+              },
+            }}
+          >
+            Presença Cancelada
+          </Snackbar>
 
           <Footer activeOpacity={0.7} onPress={() => navigation.navigate('Main')}>
             <TitleFooter>Voltar</TitleFooter>

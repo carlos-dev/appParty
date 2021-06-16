@@ -4,11 +4,6 @@ import {
 } from 'react-native';
 import styled from 'styled-components/native';
 
-import { useDispatch } from 'react-redux';
-import * as GetThematicActions from '../store/actions/getThematic';
-import * as PartyNextHoursActions from '../store/actions/partyNextHours';
-import * as PartyHappeningNowActions from '../store/actions/partyHappeningNow';
-
 import party from '../assets/images/party.jpg';
 
 import {
@@ -39,7 +34,7 @@ function Item({ navigation, partyData }) {
             <Details>
               <ItemDetails>
                 <TextDetails>Confirmados</TextDetails>
-                <Number>{partyData.item.presences.length}</Number>
+                <Number>{JSON.parse(partyData.item.presences).length}</Number>
               </ItemDetails>
 
               <ItemDetails>
@@ -61,8 +56,6 @@ function Item({ navigation, partyData }) {
 export default function Parties({
   navigation, title, partyData, id,
 }) {
-  const dispatch = useDispatch();
-
   function renderItem(data) {
     return (
       <Item navigation={navigation} partyData={data} />
