@@ -5,16 +5,18 @@ import {
 } from 'react-native';
 import styled from 'styled-components/native';
 import { useSelector, useDispatch } from 'react-redux';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+
+import ModalComponent from './Modal';
+
+import * as ModalVisibleActions from '../store/actions/modalVisible';
+
 import { scaleFontSize } from '../utils/scaleFontSize';
 
 import * as ToggleMenuActions from '../store/actions/toggleMenu';
-import * as SwitchThemeActions from '../store/actions/switchTheme';
 
 const { width, height } = Dimensions.get('window');
 
 export default function MenuContent({ navigation }) {
-  const [theme, setTheme] = useState('dark');
   const [widthMenu] = useState(new Animated.Value(0));
   const dispatch = useDispatch();
 
@@ -39,33 +41,17 @@ export default function MenuContent({ navigation }) {
     navigation.navigate(screen);
   }
 
-  async function switchTheme() {
-    const asyncTheme = await AsyncStorage.getItem('theme');
-    setTheme(asyncTheme);
-    if (!asyncTheme) {
-      AsyncStorage.setItem('theme', 'light');
-    } else if (asyncTheme === 'dark') {
-      AsyncStorage.setItem('theme', 'light');
-      console.log('light');
-    } else {
-      AsyncStorage.setItem('theme', 'dark');
-      console.log('dark');
-    }
-  }
-
   return (
     <Animated.View style={[styles.containerMenu, { transform: [{ translateX: widthMenu }] }]}>
+      <ModalComponent navigation={navigation} />
+
       <Wrapper>
         <Item onPress={() => handleNavigation('Profile')}>
           <TextItem>Editar dados</TextItem>
         </Item>
 
-        <Item onPress={() => handleNavigation('Login')}>
+        <Item onPress={() => dispatch(ModalVisibleActions.modalVisible(true))}>
           <TextItem>Sair</TextItem>
-        </Item>
-
-        <Item onPress={switchTheme}>
-          <TextItem>Tema escuro</TextItem>
         </Item>
       </Wrapper>
     </Animated.View>

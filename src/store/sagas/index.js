@@ -1,6 +1,8 @@
 import {
   all, takeLatest, call, put,
 } from 'redux-saga/effects';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import api from '../../services/api';
 
 import * as LoginActions from '../actions/login';
@@ -13,13 +15,20 @@ import * as GetInfoPartyActions from '../actions/infoParty';
 import * as SearchPartyActions from '../actions/searchParty';
 import * as ProfileActions from '../actions/profile';
 import * as UpdateProfileActions from '../actions/updateProfile';
+import * as UploadAvatarActions from '../actions/uploadAvatar';
 
 function* register(action) {
   try {
     const { registerData } = action.payload;
+    const objLogin = {
+      email: registerData.email,
+      password: registerData.password,
+    };
 
     const data = yield call(api.post, '/signup', registerData);
-    console.log(data);
+    const dataLogin = yield call(api.post, '/login', objLogin);
+    console.log(dataLogin);
+    AsyncStorage.setItem('token', dataLogin.token);
 
     yield put(RegisterActions.registerSuccess(data.status));
   } catch (error) {
@@ -35,9 +44,6 @@ function* login(action) {
 
     const { data } = yield call(api.post, '/login', loginData);
     yield put(LoginActions.loginSuccess(data.token));
-
-    // yield put(CommonActions.navigate({ routeName: 'Main' }));
-    // navigate('Main');
   } catch (error) {
     console.log(error.error);
     yield put(LoginActions.loginFailure(error.response.status));
@@ -155,6 +161,23 @@ function* updateProfile(action) {
   }
 }
 
+function* uploadAvatar(action) {
+  const { avatarData } = action.payload;
+
+  console.log(avatarData);
+
+  try {
+    const response = yield call(api.post, '/dashboard/profile/avatar', avatarData);
+
+    yield put(UploadAvatarActions.updateAvatarSuccess(response.data));
+
+    console.log(response);
+  } catch (error) {
+    console.log('updadeAvatar_error', error.response);
+    yield put(UploadAvatarActions.updateAvatarFailure(error.response));
+  }
+}
+
 export default function* rootSaga() {
   yield all([
     takeLatest('LOGIN_REQUEST', login),
@@ -167,5 +190,6 @@ export default function* rootSaga() {
     takeLatest('SEARCH_PARTY_REQUEST', searchParty),
     takeLatest('PROFILE_REQUEST', profile),
     takeLatest('UPDATE_PROFILE_REQUEST', updateProfile),
+    takeLatest('UPDATE_AVATAR_REQUEST', uploadAvatar),
   ]);
 }

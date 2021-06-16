@@ -11,6 +11,7 @@ import infoParty from './infoParty';
 import searchParty from './searchParty';
 import profile from './profile';
 import updateProfile from './updateProfile';
+import uploadAvatar from './uploadAvatar';
 
 export default combineReducers({
   toggleMenu,
@@ -24,4 +25,5 @@ export default combineReducers({
   searchParty,
   profile,
   updateProfile,
+  uploadAvatar,
 });

@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react';
-import { ScrollView } from 'react-native';
+import { ScrollView, BackHandler, Alert } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import styled from 'styled-components/native';
 import IconSearch from 'react-native-vector-icons/EvilIcons';
 
+import { asyncStorage } from 'reactotron-react-native';
 import Header from '../components/Header';
 import SnackbarComponent from '../components/Snackbar';
 import Parties from '../components/Parties';
@@ -21,9 +22,22 @@ export default function Main({ navigation }) {
   const { getThematic, partyNextHours, partyHappeningNow } = useSelector((state) => state);
 
   useEffect(() => {
-    dispatch(GetThematicActions.getThematicRequest(1));
-    dispatch(PartyNextHoursActions.partyNextHoursRequest(1));
-    dispatch(PartyHappeningNowActions.partyHappeningNowRequest(1));
+    async function getStorage() {
+      const token = await asyncStorage.getItem('token');
+
+      console.log('token', token);
+    }
+
+    BackHandler.addEventListener('hardwareBackPress', () => {
+      BackHandler.exitApp();
+    });
+
+    setTimeout(() => {
+      dispatch(GetThematicActions.getThematicRequest(1));
+      dispatch(PartyNextHoursActions.partyNextHoursRequest(1));
+      dispatch(PartyHappeningNowActions.partyHappeningNowRequest(1));
+      getStorage();
+    }, 2000);
   }, []);
 
   return (

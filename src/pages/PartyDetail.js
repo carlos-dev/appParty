@@ -21,6 +21,8 @@ import {
   TitleFooter,
 } from '../styles/globalStyles';
 
+import party from '../assets/images/party.jpg';
+
 const { width } = Dimensions.get('window');
 
 function formatDate(partyData) {
@@ -85,6 +87,7 @@ export default function PartyDetail({ navigation }) {
         <>
           <ScrollView>
             <Container>
+              <Banner source={party} />
               <Content>
                 <TitleParty>{infoParty.party[0].name}</TitleParty>
 
@@ -194,6 +197,11 @@ export const Container = styled.View`
 export const Content = styled.View`
   align-items: center;
   width: ${width * 0.9}px;
+`;
+
+export const Banner = styled.Image`
+  width: 100%;
+  height: ${width * 0.5}px;
 `;
 
 export const TitleParty = styled.Text`

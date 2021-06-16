@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components/native';
 import { useSelector, useDispatch } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import { Modal, StyleSheet } from 'react-native';
+import { Modal } from 'react-native';
 
 import { scaleFontSize } from '../utils/scaleFontSize';
 
@@ -14,7 +14,7 @@ function ModalComponent({ navigation }) {
   const modalVisible = useSelector((state) => state.modalVisible.modalVisible);
 
   function closeApp() {
-    // AsyncStorage.clean('token')
+    AsyncStorage.removeItem('token');
     navigation.navigate('Login');
     dispatch(ModalVisibleActions.modalVisible(false));
   }
@@ -52,7 +52,7 @@ export const ViewModal = styled.View`
 `;
 
 export const Box = styled.View`
-  backgroundColor: #364;
+  backgroundColor: ${(props) => props.theme.background};
   justifyContent: flex-end;
   alignItems: center;
   borderRadius: 10px;
@@ -62,7 +62,7 @@ export const Box = styled.View`
 `;
 
 export const Title = styled.Text`
-  color: #fff;
+  color: ${(props) => props.theme.primary};
   fontSize: ${scaleFontSize(14)}px;
   width: 90%;
   textAlign: center;
@@ -72,7 +72,7 @@ export const Title = styled.Text`
 export const Buttons = styled.View`
   flexDirection: row;
   borderTopWidth: 1px;
-  borderColor: #fff;
+  borderColor: ${(props) => props.theme.primary};
 `;
 
 export const Btn = styled.TouchableOpacity`
@@ -83,15 +83,8 @@ export const Btn = styled.TouchableOpacity`
 `;
 
 export const TextButton = styled.Text`
-  color: #fff;
+  color: ${(props) => props.theme.primary};
   fontSize: ${scaleFontSize(12)}px;
 `;
-
-const styles = StyleSheet.create({
-  modal: {
-    backgroundColor: '#f17',
-    justifyContent: 'center',
-  },
-});
 
 export default ModalComponent;

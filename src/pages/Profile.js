@@ -19,6 +19,7 @@ import ModalComponent from '../components/Modal';
 import * as ProfileActions from '../store/actions/profile';
 import * as ModalVisibleActions from '../store/actions/modalVisible';
 import * as UpdateProfileActions from '../store/actions/updateProfile';
+import * as UploadAvatarActions from '../store/actions/uploadAvatar';
 
 import photoExample from '../assets/images/profile.jpg';
 
@@ -44,10 +45,14 @@ export default function Profile({ navigation }) {
   useEffect(() => {
     if (profile.profileData) {
       setName(profile.profileData.name);
+
+      if (profile.profileData.avatar) {
+        setPhoto(profile.profileData.avatar);
+      }
     }
   }, [profile]);
 
-  function takePicture() {
+  async function takePicture() {
     // const options = {
     //   mediaType: 'photo',
     // };
@@ -64,16 +69,24 @@ export default function Profile({ navigation }) {
       },
     };
 
-    ImagePicker.launchImageLibrary(options, (response) => {
+    ImagePicker.launchImageLibrary(options, async (response) => {
       if (response.didCancel) {
         console.log('User cancelled image picker');
       } else if (response.error) {
         console.log('ImagePicker Error: ', response.error);
       } else {
         const source = { uri: response.uri };
-        const sourceSplit = source.uri.split('/');
-        console.log(sourceSplit[sourceSplit.length - 1]);
-        setPhoto(source);
+
+        const formData = new FormData();
+        formData.append('avatar', {
+          uri: response.uri,
+          type: 'multipart/form-data',
+          name: response.fileName,
+        });
+
+        dispatch(UploadAvatarActions.updateAvatarRequest(formData));
+
+        setPhoto(source.uri);
       }
     });
   }
@@ -88,7 +101,6 @@ export default function Profile({ navigation }) {
 
     if (updateProfile.profileData) {
       if (updateProfile.message === 'Usuário atualizado com sucesso!') {
-        console.log(updateProfile);
         setVisible(true);
 
         // setTimeout(() => {
@@ -98,7 +110,7 @@ export default function Profile({ navigation }) {
     }
   }
 
-  console.log(visible);
+  // console.log(visible);
   const onDismissSnackBar = () => setVisible(false);
 
   return (
@@ -124,7 +136,11 @@ export default function Profile({ navigation }) {
         ) : (
           <>
             <WrapperPhoto>
-              <Photo source={photo || photoExample} />
+              {photo ? (
+                <Photo source={{ uri: photo }} />
+              ) : (
+                <Photo source={photoExample} />
+              )}
 
               <BtnPhoto activeOpacity={0.7} onPress={takePicture}>
                 <IconCamera name="camera" size={scaleFontSize(20)} color="#fff" />
@@ -156,7 +172,7 @@ export default function Profile({ navigation }) {
       </ScrollView>
 
       <Snackbar
-        visible
+        visible={visible}
         onDismiss={onDismissSnackBar}
         style={{ backgroundColor: '#088710' }}
         action={{
