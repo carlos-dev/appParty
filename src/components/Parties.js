@@ -3,6 +3,7 @@ import {
   Dimensions, FlatList, ActivityIndicator, TouchableOpacity,
 } from 'react-native';
 import styled from 'styled-components/native';
+import DropShadow from 'react-native-drop-shadow';
 
 import party from '../assets/images/party.jpg';
 
@@ -26,29 +27,45 @@ const { width } = Dimensions.get('window');
 function Item({ navigation, partyData }) {
   return (
     <Cards>
-      <Card activeOpacity={0.9} onPress={() => navigation.navigate('PartyDetail', { slug: partyData.item.party_slug })}>
-        <ImgBackground source={party}>
-          <Info>
-            <Name numberOfLines={1}>{partyData.item.name}</Name>
+      <DropShadow
+        style={{
+          shadowColor: '#444',
+          shadowOffset: {
+            width: 6,
+            height: 10,
+          },
+          shadowOpacity: 0.8,
+          shadowRadius: 5,
+        }}
+      >
+        <Card
+          activeOpacity={0.9}
+          onPress={() => navigation.navigate('PartyDetail', { slug: partyData.item.party_slug })}
+        >
+          <ImgBackground source={party}>
+            <Info>
+              <Name numberOfLines={1}>{partyData.item.name}</Name>
 
-            <Details>
-              <ItemDetails>
-                <TextDetails>Confirmados</TextDetails>
-                <Number>{JSON.parse(partyData.item.presences).length}</Number>
-              </ItemDetails>
+              <Details>
+                <ItemDetails>
+                  <TextDetails>Confirmados</TextDetails>
+                  <Number>{JSON.parse(partyData.item.presences).length}</Number>
+                </ItemDetails>
 
-              <ItemDetails>
-                <TextDetails>Estilo da festa</TextDetails>
-                <TextDetails>{partyData.item.type_event}</TextDetails>
-              </ItemDetails>
+                <ItemDetails>
+                  <TextDetails>Estilo da festa</TextDetails>
+                  <TextDetails>{partyData.item.type_event}</TextDetails>
+                </ItemDetails>
 
-              <ItemDetails>
-                <TextDetails>Rolando...</TextDetails>
-              </ItemDetails>
-            </Details>
-          </Info>
-        </ImgBackground>
-      </Card>
+                {/* <ItemDetails>
+                  <TextDetails>Rolando...</TextDetails>
+                </ItemDetails> */}
+              </Details>
+            </Info>
+          </ImgBackground>
+        </Card>
+
+      </DropShadow>
     </Cards>
   );
 }
@@ -107,8 +124,10 @@ export const Header = styled.View`
 `;
 
 export const TextSeeMore = styled.Text`
-  fontSize: ${scaleFontSize(19)}px;
+  fontSize: ${scaleFontSize(16)}px;
   color: ${(props) => props.theme.primary};
+  marginBottom: 6%;
+  textDecoration: underline;
 `;
 
 export const ContainerLoading = styled.View`

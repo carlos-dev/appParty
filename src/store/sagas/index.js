@@ -153,7 +153,7 @@ function* updateProfile(action) {
 
     console.log(data);
   } catch (error) {
-    console.log('updadeProfile_error', error.response);
+    console.log('updadeProfile_error', error);
     yield put(UpdateProfileActions.updateProfileFailure(error.response));
   }
 }

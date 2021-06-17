@@ -9,10 +9,9 @@ import { useSelector, useDispatch } from 'react-redux';
 import ModalComponent from './Modal';
 
 import * as ModalVisibleActions from '../store/actions/modalVisible';
+import * as ToggleMenuActions from '../store/actions/toggleMenu';
 
 import { scaleFontSize } from '../utils/scaleFontSize';
-
-import * as ToggleMenuActions from '../store/actions/toggleMenu';
 
 const { width, height } = Dimensions.get('window');
 

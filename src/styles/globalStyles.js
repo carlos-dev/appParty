@@ -49,8 +49,9 @@ export const TextButton = styled.Text`
 `;
 
 export const TextError = styled.Text`
-  color: #fff; 
+  color:  ${(props) => props.theme.primary};
   fontSize: ${scaleFontSize(12)}px;
+  marginTop: 2%;
 `;
 
 export const Footer = styled.TouchableOpacity`
@@ -71,7 +72,7 @@ export const TitleFooter = styled.Text`
 `;
 
 export const TitleMain = styled.Text`
-  fontSize: ${scaleFontSize(22)}px;
+  fontSize: ${scaleFontSize(20)}px;
   color: ${(props) => props.theme.primary};
   marginBottom: 4%;
   marginLeft: 1%;
@@ -86,6 +87,7 @@ export const Card = styled.TouchableOpacity`
   width:  ${width * 0.85}px;
   height: ${width * 0.7}px;
   marginRight: 15px;
+  paddingBottom: 1%;
 `;
 
 export const ImgBackground = styled.ImageBackground`

@@ -27,6 +27,7 @@ import party from '../assets/images/party.jpg';
 const { width } = Dimensions.get('window');
 
 function Item({ navigation, partyData }) {
+  console.log(partyData);
   return (
     <Card activeOpacity={0.9} onPress={() => navigation.navigate('PartyDetail', { slug: partyData.item.party_slug })}>
       <ImgBackground source={party}>
@@ -36,7 +37,12 @@ function Item({ navigation, partyData }) {
           <Details>
             <ItemDetails>
               <TextDetails>Confirmados</TextDetails>
-              <Number>{partyData.item.presences.length}</Number>
+              {partyData.item.presences ? (
+                <Number>{partyData.item.presences.length}</Number>
+
+              ) : (
+                <Number>0</Number>
+              )}
             </ItemDetails>
 
             <ItemDetails>
@@ -44,9 +50,9 @@ function Item({ navigation, partyData }) {
               <TextDetails>{partyData.item.type_event}</TextDetails>
             </ItemDetails>
 
-            <ItemDetails>
+            {/* <ItemDetails>
               <TextDetails>Rolando...</TextDetails>
-            </ItemDetails>
+            </ItemDetails> */}
           </Details>
         </Info>
       </ImgBackground>

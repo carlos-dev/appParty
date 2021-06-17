@@ -113,27 +113,32 @@ export default function PartyDetail({ navigation }) {
               <Content>
                 <TitleParty>{infoParty.party[0].name}</TitleParty>
 
-                <MapContainer>
-                  <MapView
-                    initialRegion={{
-                      latitude: infoParty.party[0].latitude,
-                      longitude: infoParty.party[0].longitude,
-                      latitudeDelta: 0.05,
-                      longitudeDelta: 0.06,
-                    }}
-                    style={styles.map}
-                  >
-                    <MapView.Marker
-                      coordinate={{
+                {infoParty.party[0].latitude ? (
+                  <MapContainer>
+                    <MapView
+                      initialRegion={{
                         latitude: infoParty.party[0].latitude,
                         longitude: infoParty.party[0].longitude,
+                        latitudeDelta: 0.05,
+                        longitudeDelta: 0.06,
                       }}
-                    />
-                  </MapView>
-                  <BtnLink onPress={() => goToMap(infoParty.party[0])}>
-                    <TitleMap>Ver rotas no Google Maps</TitleMap>
-                  </BtnLink>
-                </MapContainer>
+                      style={styles.map}
+                    >
+                      <MapView.Marker
+                        coordinate={{
+                          latitude: infoParty.party[0].latitude,
+                          longitude: infoParty.party[0].longitude,
+                        }}
+                      />
+                    </MapView>
+                    <BtnLink onPress={() => goToMap(infoParty.party[0])}>
+                      <TitleMap>Ver rotas no Google Maps</TitleMap>
+                    </BtnLink>
+                  </MapContainer>
+
+                ) : (
+                  <></>
+                )}
 
                 <InfoParty>
                   <Row>
@@ -147,7 +152,7 @@ export default function PartyDetail({ navigation }) {
                       <InfoText>Pessoas confirmadas</InfoText>
                       <Label>
                         <InfoDescription>
-                          {JSON.parse(infoParty.party[0].presences).length}
+                          {JSON.parse(infoParty.party[0].presences).length || 0}
                         </InfoDescription>
                       </Label>
                     </Column>

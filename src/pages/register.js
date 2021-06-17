@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable import/no-duplicates */
-import React, { useContext, useEffect } from 'react';
-import { Dimensions } from 'react-native';
+import React, { useContext, useEffect, useState } from 'react';
+import { Dimensions, StyleSheet } from 'react-native';
 import styled, { ThemeContext } from 'styled-components/native';
 import IconEmail from 'react-native-vector-icons/MaterialCommunityIcons';
 import IconUser from 'react-native-vector-icons/Feather';
@@ -9,6 +9,7 @@ import IconLock from 'react-native-vector-icons/Feather';
 import IconCalendar from 'react-native-vector-icons/AntDesign';
 import IconArrow from 'react-native-vector-icons/AntDesign';
 import { useDispatch, useSelector } from 'react-redux';
+import { TextInputMask } from 'react-native-masked-text';
 
 import Loading from '../components/Loading';
 import Input from '../components/Input';
@@ -30,13 +31,13 @@ import {
 
 import logo from '../assets/images/logo.png';
 
-const { width } = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
 
 export default function Register({ navigation }) {
   const { primary } = useContext(ThemeContext);
   const user = useForm();
   const email = useForm();
-  const birthdate = useForm();
+  const [birthdate, setBirthdate] = useState('');
   const password = useForm();
   const passwordConfirmation = useForm();
   const dispatch = useDispatch();
@@ -54,8 +55,16 @@ export default function Register({ navigation }) {
   }, [register]);
 
   function signup() {
-    const birthdateSplit = birthdate.value.split('/');
+    const birthdateSplit = birthdate.split('/');
     const formattedDate = `${birthdateSplit[2]}/${birthdateSplit[1]}/${birthdateSplit[0]}`;
+
+    if (user.value === '' || email.value === '' || birthdate === '' || password.value === '' || passwordConfirmation.value === '') {
+      return;
+    }
+
+    if (password.value !== passwordConfirmation.value) {
+      return;
+    }
 
     const obj = {
       name: user.value,
@@ -65,6 +74,8 @@ export default function Register({ navigation }) {
       password_confirmation: passwordConfirmation.value,
       remember: true,
     };
+
+    console.log(obj);
 
     dispatch(RegisterActions.registerRequest(obj));
   }
@@ -97,10 +108,24 @@ export default function Register({ navigation }) {
 
       <ViewInput>
         <IconCalendar name="calendar" color="#666360" style={globalStyles.iconForm} />
-        <Input
+        {/* <Input
           placeholder="Data de nascimento"
           placeholderTextColor="#535466"
           {...birthdate}
+        /> */}
+
+        <TextInputMask
+          type="datetime"
+          options={{
+            format: 'DD/MM/YYYY',
+          }}
+          placeholder="Data de nascimento"
+          placeholderTextColor="#535466"
+          value={birthdate}
+          onChangeText={(text) => {
+            setBirthdate(text);
+          }}
+          style={styles.input}
         />
       </ViewInput>
 
@@ -147,3 +172,15 @@ export const TextPass = styled.Text`
   fontSize: ${scaleFontSize(12)}px;
   color: #fff;
 `;
+
+const styles = StyleSheet.create({
+  input: {
+    width: '100%',
+    borderRadius: 8,
+    paddingLeft: '15%',
+    height: height * 0.07,
+    fontSize: scaleFontSize(13),
+    color: '#fff',
+    backgroundColor: '#1e212d',
+  },
+});

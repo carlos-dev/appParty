@@ -99,15 +99,20 @@ export default function Profile({ navigation }) {
 
     dispatch(UpdateProfileActions.updateProfileRequest(obj));
 
-    if (updateProfile.profileData) {
-      if (updateProfile.message === 'Usuário atualizado com sucesso!') {
-        setVisible(true);
+    setTimeout(() => {
+      if (updateProfile.profileData) {
+        if (updateProfile.profileData.profileData.message === 'Usuário atualizado com sucesso!') {
 
-        // setTimeout(() => {
-        //   setVisible(!visible);
-        // }, 5000);
+          // setTimeout(() => {
+          //   setVisible(!visible);
+          // }, 5000);
+        }
       }
-    }
+
+      console.log(updateProfile);
+      dispatch(ProfileActions.profileRequest());
+      setVisible(true);
+    }, 1000);
   }
 
   // console.log(visible);

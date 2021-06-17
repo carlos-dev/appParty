@@ -12,6 +12,7 @@ import Parties from '../components/Parties';
 import * as GetThematicActions from '../store/actions/getThematic';
 import * as PartyNextHoursActions from '../store/actions/partyNextHours';
 import * as PartyHappeningNowActions from '../store/actions/partyHappeningNow';
+import * as ToggleMenuActions from '../store/actions/toggleMenu';
 
 import { scaleFontSize } from '../utils/scaleFontSize';
 
@@ -22,6 +23,8 @@ export default function Main({ navigation }) {
   const { getThematic, partyNextHours, partyHappeningNow } = useSelector((state) => state);
 
   useEffect(() => {
+    dispatch(ToggleMenuActions.toggleMenu(false));
+
     async function getStorage() {
       const token = await asyncStorage.getItem('token');
 
