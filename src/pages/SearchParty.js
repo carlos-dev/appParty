@@ -39,7 +39,6 @@ function Item({ navigation, partyData }) {
               <TextDetails>Confirmados</TextDetails>
               {partyData.item.presences ? (
                 <Number>{partyData.item.presences.length}</Number>
-
               ) : (
                 <Number>0</Number>
               )}
@@ -96,11 +95,15 @@ export default function SearchParty({ navigation }) {
         </ContainerLoading>
       ) : (
         <>
-          <FlatList
-            data={searchParty.searchPartyData}
-            renderItem={renderItem}
-            keyExtractor={(item) => String(item.id)}
-          />
+          {searchParty.searchPartyData.length ? (
+            <FlatList
+              data={searchParty.searchPartyData}
+              renderItem={renderItem}
+              keyExtractor={(item) => String(item.id)}
+            />
+          ) : (
+            <TextNotFound>Resultado não encontrado</TextNotFound>
+          )}
         </>
       )}
 

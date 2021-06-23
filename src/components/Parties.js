@@ -48,8 +48,12 @@ function Item({ navigation, partyData }) {
 
               <Details>
                 <ItemDetails>
-                  <TextDetails>Confirmados</TextDetails>
-                  <Number>{JSON.parse(partyData.item.presences).length}</Number>
+                  {partyData.item.presences && (
+                  <>
+                    <TextDetails>Confirmados</TextDetails>
+                    <Number>{JSON.parse(partyData.item.presences).length}</Number>
+                  </>
+                  )}
                 </ItemDetails>
 
                 {partyData.item && (

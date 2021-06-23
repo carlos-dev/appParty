@@ -17,6 +17,7 @@ import * as ProfileActions from '../actions/profile';
 import * as UpdateProfileActions from '../actions/updateProfile';
 import * as UploadAvatarActions from '../actions/uploadAvatar';
 import * as TriggerPresenceActions from '../actions/triggerPresence';
+import * as DeleteActions from '../actions/delete';
 
 function* register(action) {
   try {
@@ -189,6 +190,17 @@ function* uploadAvatar(action) {
   }
 }
 
+function* deleteUser() {
+  try {
+    const response = yield call(api.post, '/dashboard/profile/delete');
+
+    yield put(DeleteActions.deleteRequest(response.data));
+  } catch (error) {
+    console.log('delete_error', error.response);
+    yield put(DeleteActions.deleteSuccess(error.response));
+  }
+}
+
 export default function* rootSaga() {
   yield all([
     takeLatest('LOGIN_REQUEST', login),
@@ -203,5 +215,6 @@ export default function* rootSaga() {
     takeLatest('UPDATE_PROFILE_REQUEST', updateProfile),
     takeLatest('UPDATE_AVATAR_REQUEST', uploadAvatar),
     takeLatest('TRIGGER_PRESENCE_REQUEST', triggerPresence),
+    takeLatest('DELETE_REQUEST', deleteUser),
   ]);
 }

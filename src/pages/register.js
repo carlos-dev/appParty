@@ -53,6 +53,11 @@ export default function Register({ navigation }) {
         navigation.navigate('Main');
       }
     }
+
+    if (register.error) {
+      console.log(register);
+      setVisible(true);
+    }
   }, [register]);
 
   function signup() {
@@ -78,10 +83,6 @@ export default function Register({ navigation }) {
 
     dispatch(RegisterActions.registerRequest(obj));
     console.log(register);
-
-    if (register.error) {
-      setVisible(true);
-    }
   }
 
   const onDismissSnackBar = () => setVisible(false);

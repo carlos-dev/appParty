@@ -30,25 +30,36 @@ import party from '../assets/images/party.jpg';
 const { width } = Dimensions.get('window');
 
 function formatDate(partyData) {
+  let hour = new Date(partyData).getUTCHours();
+  let minutes = new Date(partyData).getUTCMinutes();
+
+  if (hour < 10) {
+    hour = `0${hour}`;
+  }
+
+  if (minutes < 10) {
+    minutes = `0${minutes}`;
+  }
+
+  return (
+    <InfoDescription>
+      {' '}
+      {hour}
+      :
+      {minutes}
+    </InfoDescription>
+  );
+}
+
+function formatDateInit(partyData) {
   let hourInit = new Date(partyData.date_init).getUTCHours();
-  let hourClose = new Date(partyData.date_close).getUTCHours();
   let minutesInit = new Date(partyData.date_init).getUTCMinutes();
-  let minutesClose = new Date(partyData.date_close).getUTCMinutes();
 
   if (hourInit < 10) {
     hourInit = `0${hourInit}`;
   }
-
-  if (hourClose < 10) {
-    hourClose = `0${hourClose}`;
-  }
-
   if (minutesInit < 10) {
     minutesInit = `0${minutesInit}`;
-  }
-
-  if (minutesClose < 10) {
-    minutesClose = `0${minutesClose}`;
   }
 
   return (
@@ -57,13 +68,7 @@ function formatDate(partyData) {
       {hourInit}
       :
       {minutesInit}
-      {' '}
-      ás
-      {' '}
-      {hourClose}
-      :
-      {minutesClose}
-      {' '}
+
     </InfoDescription>
   );
 }
@@ -72,6 +77,7 @@ export default function PartyDetail({ navigation }) {
   const [visibleConfirmed, setVisibleConfirmed] = useState(false);
   const [visibleCanceled, setVisibleCanceled] = useState(false);
   const [date, setDate] = useState('');
+  const [dateClose, setDateClose] = useState('');
 
   const { infoParty } = useSelector((state) => state);
   const dispatch = useDispatch();
@@ -84,10 +90,15 @@ export default function PartyDetail({ navigation }) {
   useEffect(() => {
     if (infoParty.party) {
       let dateSplit = infoParty.party[0].date_init.split('T');
+      let dateSplitClose = infoParty.party[0].date_close.split('T');
+
+      dateSplitClose = dateSplitClose[0];
       dateSplit = dateSplit[0];
       dateSplit = dateSplit.split('-');
+      dateSplitClose = dateSplitClose.split('-');
 
       setDate(`${dateSplit[2]}/${dateSplit[1]}/${dateSplit[0]}`);
+      setDateClose(`${dateSplitClose[2]}/${dateSplitClose[1]}/${dateSplitClose[0]}`);
 
       console.log(infoParty.party);
     }
@@ -170,16 +181,45 @@ export default function PartyDetail({ navigation }) {
                 <InfoParty>
                   <Row>
                     <Column>
-                      <InfoText>Data</InfoText>
+                      <InfoText>Data de início</InfoText>
                       <Label>
                         <InfoDescription>
                           {date}
                         </InfoDescription>
                       </Label>
                     </Column>
+
                     <Column>
-                      <InfoText>Pessoas confirmadas</InfoText>
+                      <InfoText>Data de término</InfoText>
                       <Label>
+                        <InfoDescription>
+                          {dateClose}
+                        </InfoDescription>
+                      </Label>
+                    </Column>
+
+                  </Row>
+
+                  <Row>
+                    <Column>
+                      <InfoText>Horário de início</InfoText>
+                      <Label>
+                        {formatDate(infoParty.party[0].date_init)}
+                      </Label>
+                    </Column>
+
+                    <Column>
+                      <InfoText>Horário de término</InfoText>
+                      <Label>
+                        {formatDate(infoParty.party[0].date_close)}
+                      </Label>
+                    </Column>
+                  </Row>
+
+                  <Row>
+                    <Column style={{ width: '100%' }}>
+                      <InfoText>Pessoas confirmadas</InfoText>
+                      <Label style={{ height: 'auto', width: '100%' }}>
                         <InfoDescription>
                           {JSON.parse(infoParty.party[0].presences).length || 0}
                         </InfoDescription>
@@ -188,16 +228,9 @@ export default function PartyDetail({ navigation }) {
                   </Row>
 
                   <Row>
-                    <Column>
-                      <InfoText>Horário</InfoText>
-                      <Label>
-                        {formatDate(infoParty.party[0])}
-                      </Label>
-                    </Column>
-
-                    <Column>
+                    <Column style={{ width: '100%' }}>
                       <InfoText>Ingressos</InfoText>
-                      <Button onPress={() => Linking.openURL(infoParty.party[0].ticket_link)}>
+                      <Button onPress={() => Linking.openURL(infoParty.party[0].ticket_link)} style={{ width: '100%' }}>
                         <TextButton>Comprar</TextButton>
                       </Button>
                     </Column>
@@ -373,7 +406,7 @@ export const Label = styled.View`
   background-color: #3e3b47;
   border-radius: 10px;
   height: auto;
-  width: 90%;
+  width: 93%;
 `;
 
 export const MapContainer = styled.View`
@@ -409,7 +442,7 @@ export const Row = styled.View`
   align-items: center;
 `;
 export const Column = styled.View`
-  width: 50%;
+  width: 52%;
 `;
 
 export const styles = StyleSheet.create({

@@ -7,8 +7,10 @@ import styled from 'styled-components/native';
 import { useSelector, useDispatch } from 'react-redux';
 
 import ModalComponent from './Modal';
+import ModalDelete from './ModalDelete';
 
 import * as ModalVisibleActions from '../store/actions/modalVisible';
+import * as ModalDeleteActions from '../store/actions/modalDelete';
 import * as ToggleMenuActions from '../store/actions/toggleMenu';
 
 import { scaleFontSize } from '../utils/scaleFontSize';
@@ -43,10 +45,15 @@ export default function MenuContent({ navigation }) {
   return (
     <Animated.View style={[styles.containerMenu, { transform: [{ translateX: widthMenu }] }]}>
       <ModalComponent navigation={navigation} />
+      <ModalDelete navigation={navigation} />
 
       <Wrapper>
         <Item onPress={() => handleNavigation('Profile')}>
           <TextItem>Editar dados</TextItem>
+        </Item>
+
+        <Item onPress={() => dispatch(ModalDeleteActions.modalDelete(true))}>
+          <TextItem>Excluir conta</TextItem>
         </Item>
 
         <Item onPress={() => dispatch(ModalVisibleActions.modalVisible(true))}>
