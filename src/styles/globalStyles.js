@@ -75,6 +75,7 @@ export const TitleMain = styled.Text`
   fontSize: ${scaleFontSize(20)}px;
   color: ${(props) => props.theme.primary};
   marginBottom: 4%;
+  marginTop: 4%;
   marginLeft: 1%;
 `;
 

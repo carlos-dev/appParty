@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable import/no-duplicates */
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Dimensions } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useDispatch, useSelector } from 'react-redux';
@@ -8,8 +8,8 @@ import styled, { ThemeContext } from 'styled-components/native';
 import IconEmail from 'react-native-vector-icons/MaterialCommunityIcons';
 import IconLogin from 'react-native-vector-icons/MaterialCommunityIcons';
 import IconLock from 'react-native-vector-icons/Feather';
+import { Snackbar } from 'react-native-paper';
 
-import SnackbarComponent from '../components/Snackbar';
 import Input from '../components/Input';
 import Loading from '../components/Loading';
 
@@ -34,6 +34,8 @@ const { width } = Dimensions.get('window');
 
 export default function Login({ navigation }) {
   const { primary } = useContext(ThemeContext);
+  const [visible, setVisible] = useState(false);
+
   const email = useForm();
   const password = useForm();
   const dispatch = useDispatch();
@@ -53,6 +55,10 @@ export default function Login({ navigation }) {
           navigation.navigate('Main');
         }
       }
+
+      if (login.error) {
+        setVisible(true);
+      }
     }
 
     signIn();
@@ -63,6 +69,8 @@ export default function Login({ navigation }) {
 
     dispatch(LoginActions.loginRequest(obj));
   }
+
+  const onDismissSnackBar = () => setVisible(false);
 
   return (
     <Container style={{ justifyContent: 'center' }}>
@@ -107,7 +115,21 @@ export default function Login({ navigation }) {
         <IconLogin name="login" color={primary} size={scaleFontSize(14)} />
         <TitleFooter>Criar uma conta</TitleFooter>
       </Footer>
-      <SnackbarComponent />
+
+      {login.error && (
+        <Snackbar
+          visible={visible}
+          onDismiss={onDismissSnackBar}
+          action={{
+            label: '',
+            onPress: () => {
+              // Do something
+            },
+          }}
+        >
+          Ocorreu um erro, verifique suas credenciais
+        </Snackbar>
+      )}
     </Container>
   );
 }

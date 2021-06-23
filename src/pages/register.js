@@ -10,6 +10,7 @@ import IconCalendar from 'react-native-vector-icons/AntDesign';
 import IconArrow from 'react-native-vector-icons/AntDesign';
 import { useDispatch, useSelector } from 'react-redux';
 import { TextInputMask } from 'react-native-masked-text';
+import { Snackbar } from 'react-native-paper';
 
 import Loading from '../components/Loading';
 import Input from '../components/Input';
@@ -35,6 +36,8 @@ const { width, height } = Dimensions.get('window');
 
 export default function Register({ navigation }) {
   const { primary } = useContext(ThemeContext);
+  const [visible, setVisible] = useState(false);
+
   const user = useForm();
   const email = useForm();
   const [birthdate, setBirthdate] = useState('');
@@ -50,8 +53,6 @@ export default function Register({ navigation }) {
         navigation.navigate('Main');
       }
     }
-
-    console.log(register);
   }, [register]);
 
   function signup() {
@@ -75,10 +76,15 @@ export default function Register({ navigation }) {
       remember: true,
     };
 
-    console.log(obj);
-
     dispatch(RegisterActions.registerRequest(obj));
+    console.log(register);
+
+    if (register.error) {
+      setVisible(true);
+    }
   }
+
+  const onDismissSnackBar = () => setVisible(false);
 
   return (
     <Container style={{ justifyContent: 'center' }}>
@@ -157,6 +163,22 @@ export default function Register({ navigation }) {
         <IconArrow name="arrowleft" color={primary} size={scaleFontSize(14)} />
         <TitleFooter>Voltar para o login</TitleFooter>
       </Footer>
+
+      {register.error && (
+        <Snackbar
+          visible={visible}
+          onDismiss={onDismissSnackBar}
+
+          action={{
+            label: '',
+            onPress: () => {
+              // Do something
+            },
+          }}
+        >
+          Ocorreu um erro, verifique suas credenciais
+        </Snackbar>
+      )}
     </Container>
   );
 }

@@ -52,7 +52,7 @@ export const ViewModal = styled.View`
 `;
 
 export const Box = styled.View`
-  backgroundColor: ${(props) => props.theme.background};
+  backgroundColor: ${(props) => props.theme.secondary};
   justifyContent: flex-end;
   alignItems: center;
   borderRadius: 10px;

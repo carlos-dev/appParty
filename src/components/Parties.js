@@ -52,10 +52,12 @@ function Item({ navigation, partyData }) {
                   <Number>{JSON.parse(partyData.item.presences).length}</Number>
                 </ItemDetails>
 
-                <ItemDetails>
-                  <TextDetails>Estilo da festa</TextDetails>
-                  <TextDetails>{partyData.item.type_event}</TextDetails>
-                </ItemDetails>
+                {partyData.item && (
+                  <ItemDetails>
+                    <TextDetails>Estilo da festa</TextDetails>
+                    <TextDetails>{partyData.item.type_event}</TextDetails>
+                  </ItemDetails>
+                )}
 
                 {/* <ItemDetails>
                   <TextDetails>Rolando...</TextDetails>

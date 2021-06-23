@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import React, { useEffect, useState } from 'react';
 import {
   ScrollView, Dimensions, View, StyleSheet, Linking,
@@ -6,8 +7,9 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useRoute } from '@react-navigation/native';
 import styled from 'styled-components/native';
 import MapView from 'react-native-maps';
-
+import IconCheck from 'react-native-vector-icons/AntDesign';
 import { Snackbar } from 'react-native-paper';
+
 import Header from '../components/Header';
 import SnackbarComponent from '../components/Snackbar';
 import Loading from '../components/Loading';
@@ -69,6 +71,7 @@ function formatDate(partyData) {
 export default function PartyDetail({ navigation }) {
   const [visibleConfirmed, setVisibleConfirmed] = useState(false);
   const [visibleCanceled, setVisibleCanceled] = useState(false);
+  const [date, setDate] = useState('');
 
   const { infoParty } = useSelector((state) => state);
   const dispatch = useDispatch();
@@ -78,6 +81,18 @@ export default function PartyDetail({ navigation }) {
     dispatch(InfoPartyActions.infoPartyRequest(route.params.slug));
   }, []);
 
+  useEffect(() => {
+    if (infoParty.party) {
+      let dateSplit = infoParty.party[0].date_init.split('T');
+      dateSplit = dateSplit[0];
+      dateSplit = dateSplit.split('-');
+
+      setDate(`${dateSplit[2]}/${dateSplit[1]}/${dateSplit[0]}`);
+
+      console.log(infoParty.party);
+    }
+  }, [infoParty]);
+
   function goToMap(partyData) {
     console.log(partyData);
     Linking.openURL(`https://www.google.com.br/maps/@${partyData.latitude},${partyData.longitude},15z`);
@@ -86,7 +101,9 @@ export default function PartyDetail({ navigation }) {
   function triggerPresence() {
     dispatch(TriggerPresenceActions.triggerPresenceRequest(infoParty.party[0].party_slug));
 
-    dispatch(InfoPartyActions.infoPartyRequest(route.params.slug));
+    setTimeout(() => {
+      dispatch(InfoPartyActions.infoPartyRequest(route.params.slug));
+    }, 500);
 
     setTimeout(() => {
       if (!JSON.parse(infoParty.party[0].presences).length) {
@@ -109,7 +126,12 @@ export default function PartyDetail({ navigation }) {
         <>
           <ScrollView>
             <Container>
-              <Banner source={party} />
+              {infoParty.party[0].banner_link ? (
+                <Banner source={{ uri: infoParty.party[0].banner_link }} />
+              ) : (
+                <Banner source={party} />
+              )}
+
               <Content>
                 <TitleParty>{infoParty.party[0].name}</TitleParty>
 
@@ -140,12 +162,19 @@ export default function PartyDetail({ navigation }) {
                   <></>
                 )}
 
+                <ContentCheck>
+                  <IconCheck name="check" color="#169a11" style={{ fontSize: scaleFontSize(14) }} />
+                  <TextCheck>Esta festa está seguindo todos protocolos de prevenção definidos pela OMS</TextCheck>
+                </ContentCheck>
+
                 <InfoParty>
                   <Row>
                     <Column>
-                      <InfoText>Horário</InfoText>
+                      <InfoText>Data</InfoText>
                       <Label>
-                        {formatDate(infoParty.party[0])}
+                        <InfoDescription>
+                          {date}
+                        </InfoDescription>
                       </Label>
                     </Column>
                     <Column>
@@ -157,7 +186,15 @@ export default function PartyDetail({ navigation }) {
                       </Label>
                     </Column>
                   </Row>
+
                   <Row>
+                    <Column>
+                      <InfoText>Horário</InfoText>
+                      <Label>
+                        {formatDate(infoParty.party[0])}
+                      </Label>
+                    </Column>
+
                     <Column>
                       <InfoText>Ingressos</InfoText>
                       <Button onPress={() => Linking.openURL(infoParty.party[0].ticket_link)}>
@@ -165,6 +202,7 @@ export default function PartyDetail({ navigation }) {
                       </Button>
                     </Column>
                   </Row>
+
                   <Row>
                     <Column style={{ width: '100%' }}>
                       <InfoText>Descrição do Evento</InfoText>
@@ -175,6 +213,19 @@ export default function PartyDetail({ navigation }) {
                       </Label>
                     </Column>
                   </Row>
+
+                  {infoParty.party[0].atractions && (
+                    <Row>
+                      <Column style={{ width: '100%' }}>
+                        <InfoText>Atrações</InfoText>
+                        <Label style={{ height: 'auto', width: '100%' }}>
+                          <InfoDescription>
+                            {infoParty.party[0].atractions}
+                          </InfoDescription>
+                        </Label>
+                      </Column>
+                    </Row>
+                  )}
                   <Row>
                     <Column style={{ width: '100%' }}>
                       <InfoText>Endereço</InfoText>
@@ -201,7 +252,12 @@ export default function PartyDetail({ navigation }) {
 
                 {JSON.parse(infoParty.party[0].presences).length ? (
                   <>
-                    <Button onPress={triggerPresence} style={{ marginBottom: '25%', marginTop: '10%', width: '100%' }}>
+                    <Button
+                      onPress={triggerPresence}
+                      style={{
+                        marginBottom: '25%', marginTop: '10%', width: '100%', backgroundColor: '#dc3232',
+                      }}
+                    >
                       <TextButton>Não vou</TextButton>
                     </Button>
                   </>
@@ -269,7 +325,7 @@ export const Banner = styled.Image`
 `;
 
 export const TitleParty = styled.Text`
-  padding: 20px 0 10px;
+  padding: 30px 0 10px;
   justify-content: flex-start;
   font-size: ${scaleFontSize(20)}px;
   color: ${(props) => props.theme.primary};
@@ -279,6 +335,20 @@ export const BtnLink = styled.TouchableOpacity`
   padding-top: 4%;
 `;
 
+export const ContentCheck = styled.View`
+  width: 90%;
+  flexDirection: row;
+  justify-content: center;
+  margin-top: 4%;
+`;
+
+export const TextCheck = styled.Text`
+  color: ${(props) => props.theme.primary};
+  font-size: ${scaleFontSize(9)}px;
+  textAlign: center;
+  margin-left: 1%;
+`;
+
 export const TitleMap = styled.Text`
   color: ${(props) => props.theme.primary};
   font-size: ${scaleFontSize(15)}px;
@@ -286,7 +356,7 @@ export const TitleMap = styled.Text`
 
 export const InfoText = styled.Text`
   color: ${(props) => props.theme.primary};
-  font-size: ${scaleFontSize(15)}px;
+  font-size: ${scaleFontSize(12)}px;
   padding: 0 10px 10px;
 `;
 
@@ -336,6 +406,7 @@ export const Row = styled.View`
   margin-top: 20px;
   flex-direction: row;
   width: 100%;
+  align-items: center;
 `;
 export const Column = styled.View`
   width: 50%;

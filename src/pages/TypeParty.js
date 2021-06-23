@@ -46,10 +46,6 @@ function Item({ navigation, partyData }) {
               <TextDetails>Estilo da festa</TextDetails>
               <TextDetails>{partyData.item.type_event}</TextDetails>
             </ItemDetails>
-
-            <ItemDetails>
-              <TextDetails>Rolando...</TextDetails>
-            </ItemDetails>
           </Details>
         </Info>
       </ImgBackground>

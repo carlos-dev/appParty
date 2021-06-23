@@ -28,9 +28,8 @@ function* register(action) {
 
     const data = yield call(api.post, '/signup', registerData);
     const dataLogin = yield call(api.post, '/login', objLogin);
-    console.log(dataLogin);
-    AsyncStorage.setItem('token', dataLogin.token);
 
+    AsyncStorage.setItem('token', dataLogin.data.token);
     yield put(RegisterActions.registerSuccess(data.status));
   } catch (error) {
     console.log('saga_register', error.response);
@@ -46,7 +45,7 @@ function* login(action) {
     const { data } = yield call(api.post, '/login', loginData);
     yield put(LoginActions.loginSuccess(data.token));
   } catch (error) {
-    console.log(error.error);
+    console.log(error.response);
     yield put(LoginActions.loginFailure(error.response.status));
   }
 }
