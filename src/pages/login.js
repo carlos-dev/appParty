@@ -53,6 +53,11 @@ export default function Login({ navigation }) {
         if (typeof login.login.loginData === 'string') {
           await AsyncStorage.setItem('token', login.login.loginData);
           navigation.navigate('Main');
+          email.setValue('');
+          password.setValue('');
+
+          email.setError(null);
+          password.setError(null);
         }
       }
 

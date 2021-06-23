@@ -51,6 +51,12 @@ export default function Register({ navigation }) {
     if (register.registerData) {
       if (register.registerData.registerData === 200) {
         navigation.navigate('Main');
+
+        user.setValue('');
+        email.setValue('');
+        password.setValue('');
+        passwordConfirmation.setValue('');
+        setBirthdate('');
       }
     }
 
