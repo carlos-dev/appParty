@@ -56,12 +56,14 @@ function Item({ navigation, partyData }) {
                   )}
                 </ItemDetails>
 
-                {partyData.item && (
-                  <ItemDetails>
+                <ItemDetails>
+                  {partyData.item.type_event && (
+                  <>
                     <TextDetails>Estilo da festa</TextDetails>
                     <TextDetails>{partyData.item.type_event}</TextDetails>
-                  </ItemDetails>
-                )}
+                  </>
+                  )}
+                </ItemDetails>
 
                 {/* <ItemDetails>
                   <TextDetails>Rolando...</TextDetails>

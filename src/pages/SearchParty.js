@@ -12,7 +12,6 @@ import { scaleFontSize } from '../utils/scaleFontSize';
 import {
   Container,
   globalStyles,
-  TitleMain,
   ImgBackground,
   Info,
   Details,
@@ -45,8 +44,12 @@ function Item({ navigation, partyData }) {
             </ItemDetails>
 
             <ItemDetails>
-              <TextDetails>Estilo da festa</TextDetails>
-              <TextDetails>{partyData.item.type_event}</TextDetails>
+              {partyData.item.type_event && (
+                <>
+                  <TextDetails>Estilo da festa</TextDetails>
+                  <TextDetails>{partyData.item.type_event}</TextDetails>
+                </>
+              )}
             </ItemDetails>
 
             {/* <ItemDetails>
@@ -63,6 +66,10 @@ export default function SearchParty({ navigation }) {
   const [parties, setParties] = useState([0]);
   const dispatch = useDispatch();
   const { searchParty } = useSelector((state) => state);
+
+  useEffect(() => {
+    dispatch(SearchPartyActions.searchPartyRequest(''));
+  }, []);
 
   const renderItem = (data) => (
     <Item navigation={navigation} partyData={data} />

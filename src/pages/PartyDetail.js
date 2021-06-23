@@ -175,7 +175,7 @@ export default function PartyDetail({ navigation }) {
 
                 <ContentCheck>
                   <IconCheck name="check" color="#169a11" style={{ fontSize: scaleFontSize(14) }} />
-                  <TextCheck>Esta festa está seguindo todos protocolos de prevenção definidos pela OMS</TextCheck>
+                  <TextCheck>Esta festa está seguindo todos protocolos para evitar a tranmissão de COVID-19 definidos pela OMS</TextCheck>
                 </ContentCheck>
 
                 <InfoParty>

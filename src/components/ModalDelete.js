@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Modal, ActivityIndicator } from 'react-native';
 import styled from 'styled-components/native';
 import { useSelector, useDispatch } from 'react-redux';
@@ -11,7 +11,7 @@ import * as DeleteActions from '../store/actions/delete';
 
 function ModalDelete({ navigation }) {
   const dispatch = useDispatch();
-  const { modalDelete, deleteUser } = useSelector((state) => state);
+  const { modalDelete } = useSelector((state) => state);
 
   function deleteAccount() {
     dispatch(DeleteActions.deleteRequest());
