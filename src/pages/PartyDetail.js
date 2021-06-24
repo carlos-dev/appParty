@@ -17,6 +17,7 @@ import Loading from '../components/Loading';
 import { scaleFontSize } from '../utils/scaleFontSize';
 import * as TriggerPresenceActions from '../store/actions/triggerPresence';
 import * as InfoPartyActions from '../store/actions/infoParty';
+import * as ProfileActions from '../store/actions/profile';
 
 import {
   Button,
@@ -29,46 +30,17 @@ import party from '../assets/images/party.jpg';
 
 const { width } = Dimensions.get('window');
 
-function formatDate(partyData) {
-  let hour = new Date(partyData).getUTCHours();
-  let minutes = new Date(partyData).getUTCMinutes();
+function formatDate(time) {
+  let hourSplit = time.split('T');
 
-  if (hour < 10) {
-    hour = `0${hour}`;
-  }
-
-  if (minutes < 10) {
-    minutes = `0${minutes}`;
-  }
+  hourSplit = hourSplit[1].split(':');
 
   return (
     <InfoDescription>
       {' '}
-      {hour}
+      {hourSplit[0]}
       :
-      {minutes}
-    </InfoDescription>
-  );
-}
-
-function formatDateInit(partyData) {
-  let hourInit = new Date(partyData.date_init).getUTCHours();
-  let minutesInit = new Date(partyData.date_init).getUTCMinutes();
-
-  if (hourInit < 10) {
-    hourInit = `0${hourInit}`;
-  }
-  if (minutesInit < 10) {
-    minutesInit = `0${minutesInit}`;
-  }
-
-  return (
-    <InfoDescription>
-      {' '}
-      {hourInit}
-      :
-      {minutesInit}
-
+      {hourSplit[1]}
     </InfoDescription>
   );
 }
@@ -76,15 +48,17 @@ function formatDateInit(partyData) {
 export default function PartyDetail({ navigation }) {
   const [visibleConfirmed, setVisibleConfirmed] = useState(false);
   const [visibleCanceled, setVisibleCanceled] = useState(false);
+  const [presences, setPresences] = useState([]);
   const [date, setDate] = useState('');
   const [dateClose, setDateClose] = useState('');
 
-  const { infoParty } = useSelector((state) => state);
+  const { infoParty, profile } = useSelector((state) => state);
   const dispatch = useDispatch();
   const route = useRoute();
 
   useEffect(() => {
     dispatch(InfoPartyActions.infoPartyRequest(route.params.slug));
+    dispatch(ProfileActions.profileRequest());
   }, []);
 
   useEffect(() => {
@@ -100,12 +74,23 @@ export default function PartyDetail({ navigation }) {
       setDate(`${dateSplit[2]}/${dateSplit[1]}/${dateSplit[0]}`);
       setDateClose(`${dateSplitClose[2]}/${dateSplitClose[1]}/${dateSplitClose[0]}`);
 
-      console.log(infoParty.party);
+      const arrPresence = JSON.parse(infoParty.party[0].presences);
+
+      console.log(parseFloat(infoParty.party[0].latitude));
+
+      if (arrPresence.length && profile.profileData) {
+        if (arrPresence[arrPresence.length - 1].user_id === profile.profileData.id) {
+          setPresences(arrPresence);
+        } else {
+          setPresences([]);
+        }
+      } else {
+        setPresences([]);
+      }
     }
-  }, [infoParty]);
+  }, [infoParty, profile]);
 
   function goToMap(partyData) {
-    console.log(partyData);
     Linking.openURL(`https://www.google.com.br/maps/@${partyData.latitude},${partyData.longitude},15z`);
   }
 
@@ -116,13 +101,19 @@ export default function PartyDetail({ navigation }) {
       dispatch(InfoPartyActions.infoPartyRequest(route.params.slug));
     }, 500);
 
+    const arrPresence = JSON.parse(infoParty.party[0].presences);
     setTimeout(() => {
-      if (!JSON.parse(infoParty.party[0].presences).length) {
+      if (arrPresence.length) {
+        if (arrPresence[arrPresence.length - 1].user_id === profile.profileData.id) {
+          setVisibleCanceled(true);
+          setVisibleConfirmed(false);
+        } else {
+          setVisibleConfirmed(true);
+          setVisibleCanceled(false);
+        }
+      } else {
         setVisibleConfirmed(true);
         setVisibleCanceled(false);
-      } else {
-        setVisibleCanceled(true);
-        setVisibleConfirmed(false);
       }
     }, 2000);
   }
@@ -150,8 +141,8 @@ export default function PartyDetail({ navigation }) {
                   <MapContainer>
                     <MapView
                       initialRegion={{
-                        latitude: infoParty.party[0].latitude,
-                        longitude: infoParty.party[0].longitude,
+                        latitude: parseFloat(infoParty.party[0].latitude),
+                        longitude: parseFloat(infoParty.party[0].longitude),
                         latitudeDelta: 0.05,
                         longitudeDelta: 0.06,
                       }}
@@ -159,8 +150,8 @@ export default function PartyDetail({ navigation }) {
                     >
                       <MapView.Marker
                         coordinate={{
-                          latitude: infoParty.party[0].latitude,
-                          longitude: infoParty.party[0].longitude,
+                          latitude: parseFloat(infoParty.party[0].latitude),
+                          longitude: parseFloat(infoParty.party[0].longitude),
                         }}
                       />
                     </MapView>
@@ -227,14 +218,16 @@ export default function PartyDetail({ navigation }) {
                     </Column>
                   </Row>
 
-                  <Row>
-                    <Column style={{ width: '100%' }}>
-                      <InfoText>Ingressos</InfoText>
-                      <Button onPress={() => Linking.openURL(infoParty.party[0].ticket_link)} style={{ width: '100%' }}>
-                        <TextButton>Comprar</TextButton>
-                      </Button>
-                    </Column>
-                  </Row>
+                  {infoParty.party[0].ticket_link && (
+                    <Row>
+                      <Column style={{ width: '100%' }}>
+                        <InfoText>Ingressos</InfoText>
+                        <Button onPress={() => Linking.openURL(infoParty.party[0].ticket_link)} style={{ width: '100%' }}>
+                          <TextButton>Comprar</TextButton>
+                        </Button>
+                      </Column>
+                    </Row>
+                  )}
 
                   <Row>
                     <Column style={{ width: '100%' }}>
@@ -283,7 +276,7 @@ export default function PartyDetail({ navigation }) {
                   </Row>
                 </InfoParty>
 
-                {JSON.parse(infoParty.party[0].presences).length ? (
+                {presences.length ? (
                   <>
                     <Button
                       onPress={triggerPresence}
@@ -299,6 +292,18 @@ export default function PartyDetail({ navigation }) {
                     <TextButton>Eu vou</TextButton>
                   </Button>
                 )}
+                {/*
+                {presences.length && (
+                <Button
+                  onPress={triggerPresence}
+                  style={{
+                    marginBottom: '25%', marginTop: '10%', width: '100%', backgroundColor: '#dc3232',
+                  }}
+                >
+                  <TextButton>Não vou</TextButton>
+                </Button>
+                )} */}
+
               </Content>
             </Container>
           </ScrollView>

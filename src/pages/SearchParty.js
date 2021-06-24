@@ -37,7 +37,8 @@ function Item({ navigation, partyData }) {
             <ItemDetails>
               <TextDetails>Confirmados</TextDetails>
               {partyData.item.presences ? (
-                <Number>{partyData.item.presences.length}</Number>
+                <Number>{JSON.parse(partyData.item.presences).length}</Number>
+
               ) : (
                 <Number>0</Number>
               )}
