@@ -39,7 +39,7 @@ function Item({ navigation, partyData }) {
           <Details>
             <ItemDetails>
               <TextDetails>Confirmados</TextDetails>
-              <Number>{partyData.item.presences.length}</Number>
+              <Number>{JSON.parse(partyData.item.presences).length}</Number>
             </ItemDetails>
 
             <ItemDetails>
